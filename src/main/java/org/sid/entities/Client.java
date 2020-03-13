@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;        
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,10 +21,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @Entity
 @Table(name="Client")
-public class Client implements Serializable {
+@DiscriminatorValue("C")
+public class Client extends users implements Serializable {
 
-	@Id  @GeneratedValue(strategy=GenerationType.IDENTITY) 
-	private Long  id ;
 	private String sexe  ;
 	private String nom ; 
 	private String prenom ;
@@ -48,7 +48,8 @@ public class Client implements Serializable {
 	
 	
 	
-	public Client(String sexe, String nom, String prenom, Long cin, Date dateN, String adresse, int mobile, String mail,
+	public Client(String sexe, String nom, String prenom, Long cin, Date dateN, 
+			String adresse, int mobile, String mail,
 			 users user) {
 		super();
 		this.sexe = sexe;
@@ -91,12 +92,7 @@ public class Client implements Serializable {
 	}
 
 
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+	
 	public String getSexe() {
 		return sexe;
 	}
