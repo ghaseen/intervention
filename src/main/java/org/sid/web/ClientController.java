@@ -36,7 +36,7 @@ public class ClientController {
 			return"redirect:/user/index?page="+page+"&motCle"+motCle;
 		}
 		
-		
+		//fafouna <3
 		@PostMapping("/admin/save")
 		public String save (Model model , @Valid Client client , BindingResult bindingResult) {
 			if(bindingResult.hasErrors()) return"FormClient" ;
