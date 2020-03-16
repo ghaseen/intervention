@@ -1,6 +1,5 @@
  package org.sid.sec;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 import javax.sql.DataSource;
 
