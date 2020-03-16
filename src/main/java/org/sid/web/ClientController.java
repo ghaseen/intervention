@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ClientController {
 	@Autowired
 	private ClientRepository CRepository ;
-		@GetMapping("/user/index")
+	
+	
+		@GetMapping("/user/index")	
+		//admin
 		public String chercher(Model model , @RequestParam(name="page", defaultValue="0") int page ,
 				@RequestParam(name="motCle", defaultValue="") String mc) {
 			Page<Client>pageClient=CRepository.findByDesignationContains("%"+mc+"%",PageRequest.of(page, 5)) ;
@@ -27,7 +30,7 @@ public class ClientController {
 			model.addAttribute("pages",new int[pageClient.getTotalPages()]) ;
 			model.addAttribute("currentPage",page) ; 
 			model.addAttribute("motCle" , mc) ;
-			return "Client" ;
+			return "/Client/Client" ;
 		}
 
 		@GetMapping("/admin/delete")
@@ -49,7 +52,7 @@ public class ClientController {
 	Client client=CRepository.findById(id).get();
 			model.addAttribute("client",client) ; 
 
-			return "EditClient" ; 
+			return "/Client/EditClient" ; 
 		}
 		
 		@GetMapping("/admin/infop")
@@ -57,14 +60,14 @@ public class ClientController {
 	Client client=CRepository.findById(id).get();
 			model.addAttribute("client",client) ; 
 
-			return "infoP" ; 
+			return "/Client/infoP" ; 
 		}
 		
 		@GetMapping("/admin/FormClient")
 		public String form (Model model) {
 			model.addAttribute("client",new Client()) ; 
 			
-			return "FormClient" ; 
+			return "/Client/FormClient" ; 
 		}
 		
 

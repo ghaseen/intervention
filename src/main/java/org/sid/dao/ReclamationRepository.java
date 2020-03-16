@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ReclamationRepository extends JpaRepository<Reclamation, Long> {
-	@Query("select r from Reclamation r where (r.nomPrenom like:x)")
+	@Query("select r from Reclamation r where (r.explication like:x)")
 	public Page<Reclamation> findByDesignationContains(@Param("x")String mc, Pageable pageable);
 	
 }

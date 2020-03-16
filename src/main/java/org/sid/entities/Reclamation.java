@@ -20,8 +20,8 @@ public class Reclamation implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idR;
-	private String nomPrenom;
-	private String Fixe;
+	
+	private String Fixe;//chnya hetha
 	private String addresse;
 	private int codeP;
 	private String typeR;
@@ -33,8 +33,8 @@ public class Reclamation implements Serializable {
 	public Reclamation(Long idR, String nomPrenom, String fixe, String addresse, int codeP, String typeR,
 			String explication, Client client) {
 		super();
-		this.nomPrenom = nomPrenom;
-		Fixe = fixe;
+		
+		this.Fixe = fixe;
 		this.addresse = addresse;
 		this.codeP = codeP;
 		this.typeR = typeR;
@@ -55,13 +55,7 @@ public class Reclamation implements Serializable {
 		this.idR = idR;
 	}
 
-	public String getNomPrenom() {
-		return nomPrenom;
-	}
 
-	public void setNomPrenom(String nomPrenom) {
-		this.nomPrenom = nomPrenom;
-	}
 
 	public String getFixe() {
 		return Fixe;

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeLeaf.org"
+xmlns:layout="http://www.ultraq.nz/thymeleaf/layout"
+layout:decorate="layout"
+>
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+<
+</head>
+<body>
+<div layout:fragment="content1">
+<div class="container">
+	 	<div class="panel panel-primary">
+			<div class="panel-heading">Liste des Clients</div>
+			<div >
+			<form th:action="@{/user/index}" method="get">
+			<label>Mot clé:</label>
+			<input type="text" name="motCle" th:value="${motCle}">
+			<button type="submit" class="btn btn-primary">chercher</button>
+			</form>
+			</div>
+			
+			<div class="panel-body">
+				<table class="table">
+					<tr>
+						<th >ID</th>
+						<th >sexe</th>
+						<th >nom</th>
+						<th >prenom</th>
+												<th >CIN</th>
+												<th >date de naissance </th>
+												<th >adresse</th>
+										<th >mobile</th>
+																<th >mail</th>
+										
+						
+					</tr>
+					<tr th:each="c:${listClient}">
+						<td th:text="${c.id}"></td>
+												<td th:text="${c.sexe}"></td>
+												<td th:text="${c.nom}"></td>
+												<td th:text="${c.prenom}"></td>
+												<td th:text="${c.cin}"></td>
+												<td th:text="${c.dateN}"></td>
+						
+						<td th:text="${c.adresse}"></td>
+						<td th:text="${c.mobile}"></td>
+						<td th:text="${c.mail}"></td>
+						<td> 
+						<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/delete(id=${c.id},page=${currentPage},motCle=${motCle})}"> Delete</a>
+						</td>
+						<td> 
+						<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/edit(id=${c.id})}"> Edit</a>		
+						</td>
+						<td>								<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/infop(id=${c.id})}"> mes info</a>
+						</td>
+					</tr>
+				</table>  
+					<div>
+				<ul class="nav nav-pills">
+    <li th:class="${currentPage==status.index}?'active':''" th:each="page,status:${pages}">
+				<a th:href="@{/user/index(page=${status.index},motCle=${motCle})}"  th:text="${status.index}"></a>
+   		 </li>
+		</ul>
+			</div>
+				
+				
+			</div>
+		</div>
+	</div>
+	
+		
+
+
+
+</div>
+			
+
+</body>
+</html>

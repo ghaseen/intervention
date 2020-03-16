@@ -3,6 +3,7 @@ package org.sid.web;
 import javax.validation.Valid;
 
 import org.sid.dao.ReclamationRepository;
+import org.sid.entities.Client;
 import org.sid.entities.Reclamation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 @Controller
 public class ReclamationController {
 	@Autowired
@@ -26,7 +28,7 @@ public class ReclamationController {
 		model.addAttribute("pages",new int[pageReclamation.getTotalPages()]) ;
 		model.addAttribute("currentPage",page) ; 
 		model.addAttribute("motCle" , mc) ;
-		return "Reclamation" ;
+		return "/Reclamation/Reclamation" ;
 	}
 
 	@GetMapping("/admin/deleter")
@@ -48,7 +50,7 @@ public class ReclamationController {
 Reclamation reclamation=RRepository.findById(id).get();
 		model.addAttribute("reclamation",reclamation) ; 
 
-		return "EditReclamation" ; 
+		return "/Reclamation/EditReclamation" ; 
 	}
 	
 	@GetMapping("/admin/infor")
@@ -60,11 +62,14 @@ Reclamation reclamation=RRepository.findById(id).get();
 	}
 	
 	@GetMapping("/admin/FormReclamation")
+	
 	public String form1 (Model model) {
 		model.addAttribute("reclamation",new Reclamation()) ; 
 		
-		return "FormReclamation" ; 
+		return "/Reclamation/FormReclamation" ; 
 	}
+
+	
 	
 
 

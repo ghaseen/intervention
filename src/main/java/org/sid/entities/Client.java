@@ -35,10 +35,9 @@ public class Client extends users implements Serializable {
 	private String mail ;
 	
 	
-	@OneToMany(mappedBy="client" , fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="client" , fetch=FetchType.EAGER)
 	private List<Reclamation> rec; 
-	@OneToOne
-	private users user ;
+
 	
 	public Client() {
 		super();
@@ -49,8 +48,8 @@ public class Client extends users implements Serializable {
 	
 	
 	public Client(String sexe, String nom, String prenom, Long cin, Date dateN, 
-			String adresse, int mobile, String mail,
-			 users user) {
+			String adresse, int mobile, String mail
+			) {
 		super();
 		this.sexe = sexe;
 		this.nom = nom;
@@ -60,7 +59,7 @@ public class Client extends users implements Serializable {
 		this.adresse = adresse;
 		this.mobile = mobile;
 		this.mail = mail;
-		this.user = user;
+		
 	}
 
 
@@ -144,22 +143,6 @@ public class Client extends users implements Serializable {
 
 
 
-
-	public users getUser() {
-		return user;
-	}
-
-
-
-
-
-
-
-
-
-	public void setUser(users user) {
-		this.user = user;
-	} 
 	  
 	
 	
