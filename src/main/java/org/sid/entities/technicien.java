@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,9 +18,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @Entity
 @Table(name="techniciens")
-public class technicien implements Serializable {
-	@Id  @GeneratedValue(strategy=GenerationType.IDENTITY) 
-	private Long idT ;
+@DiscriminatorValue("T")
+public class technicien extends users implements Serializable {
+	
 	private String nom ;
 	private String prenom ;
 	private Long cin ;
@@ -30,10 +31,12 @@ public class technicien implements Serializable {
 	private String mail ; 
 	@OneToMany(mappedBy="technicien")
 	private List<Intervention> inter; 
-	public technicien(Long idT, String nom, String prenom, Long cin, Date dateN, String spec, String adresse,
+	
+	
+	public technicien( String nom, String prenom, Long cin, Date dateN, String spec, String adresse,
 			int mobile, String mail, String password) {
 		super();
-		this.idT = idT;
+		
 		this.nom = nom;
 		this.prenom = prenom;
 		this.cin = cin;
@@ -47,12 +50,7 @@ public class technicien implements Serializable {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Long getIdT() {
-		return idT;
-	}
-	public void setIdT(Long idT) {
-		this.idT = idT;
-	}
+	
 	public String getNom() {
 		return nom;
 	}

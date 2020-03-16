@@ -2,25 +2,36 @@ package org.sid.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
+@Inheritance(strategy = InheritanceType.JOINED)
 @Entity
+@DiscriminatorColumn(name = "US_Type")
 @Table(name="users")
 public class users implements Serializable{
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY) 
+	private Long  id ;
 private String username ;
 private String password ;
 private boolean active ;
-private Client  client;
-public users(String username, String password, boolean active) {
+private String role;
+
+public users(String username, String password, boolean active,String role) {
 	super();
 	this.username = username;
 	this.password = password;
 	this.active = active;
+	this.role=role;
 }
 public users() {
 	super();
