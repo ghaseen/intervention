@@ -20,8 +20,13 @@ public class ClientController {
 	@Autowired
 	private ClientRepository CRepository ;
 	
+	@GetMapping("/ind")	
+	public String ind() {
+		return "index";
+	}
 	
-		@GetMapping("/user/index")	
+	
+		@GetMapping("/index")	
 		//admin
 		public String chercher(Model model , @RequestParam(name="page", defaultValue="0") int page ,
 				@RequestParam(name="motCle", defaultValue="") String mc) {
@@ -30,7 +35,7 @@ public class ClientController {
 			model.addAttribute("pages",new int[pageClient.getTotalPages()]) ;
 			model.addAttribute("currentPage",page) ; 
 			model.addAttribute("motCle" , mc) ;
-			return "/Client/Client" ;
+			return "Client" ;
 		}
 
 		@GetMapping("/admin/delete")

@@ -38,7 +38,7 @@ private AdminRepository ur ;
 	public void run(String... args) throws Exception {
 		PasswordEncoder bcpe=passwordenc() ;
  
-	ur.save(new Admin("admin",bcpe.encode("12345"),true,"mohamed","stamboli","ADMIN")) ;
+	//ur.save(new Admin("admin",bcpe.encode("12345"),true,"mohamed","stamboli","ADMIN")) ;
 	
 	
 	
