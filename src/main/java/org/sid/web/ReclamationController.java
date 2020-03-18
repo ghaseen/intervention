@@ -52,7 +52,7 @@ Reclamation reclamation=RRepository.findById(id).get();
 
 		return "/Reclamation/EditReclamation" ; 
 	}
-	
+	//ghriba 5ater mahbtetchhhh
 	@GetMapping("/admin/infor")
 	public String formR (Model model , Long id) {
 Reclamation reclamation=RRepository.findById(id).get();
