@@ -14,12 +14,16 @@ layout:decorate="layout"sin>
 <div class="container">
 <div class="panel-heading"> nouvelle reclamation</div>
 <div class="panel-body">
-<form th:action="@{/admin/saver}" method="post">
 
+<form th:action="@{/admin/saver}" method="post">
+<div class="form-group">
+<label class="control-label">IdR:</label> <label th:text="${reclamation.idR}"></label>
+<input class="form-control" type="hidden" name="id" th:value="${reclamation.idR}">
+
+</div>
 <div class="form-group">
 <label class="control-label">IDC</label>
-<input class="form-control" type="text" name="idc" th:value="${reclamation.client}">  
-<span th:errors="${reclamation.client}" class="text-danger"></span>
+<input class="form-control" type="text" name="client" th:value="${reclamation.client}">  
 </div>
 <div class="form-group">
 <label class="control-label">nomPrenom</label>

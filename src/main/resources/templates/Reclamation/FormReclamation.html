@@ -14,38 +14,40 @@ layout:decorate="layout"sin>
 <div class="container">
 <div class="panel-heading"> nouvelle reclamation</div>
 <div class="panel-body">
-<form th:action="@{/admin/saver}" method="post">
-<div class="form-group">
-<label class="control-label">IdR:</label> <label th:text="${reclamation.idR}"></label>
-<input class="form-control" type="hidden" name="id" th:value="${reclamation.idR}">
+<form th:action="@{/admin/saver}" th:method="POST">
 
-</div>
 <div class="form-group">
 <label class="control-label">IDC</label>
-<input class="form-control" type="text" name="client" th:value="${reclamation.client}">  
+<input class="form-control" type="text" name="idc" th:value="${reclamation.client}">  
+<span th:errors="${reclamation.client}" class="text-danger"></span>
 </div>
+
+
 <div class="form-group">
-<label class="control-label">nomPrenom</label>
-<input class="form-control" type="text" name="nomPrenom" th:value="${reclamation.nomPrenom}">
-<span th:errors="${reclamation.nomPrenom}" class="text-danger"></span>
-</div><div class="form-group">
 <label class="control-label">Fixe</label>
 <input class="form-control" type="text" name="Fixe" th:value="${reclamation.Fixe}">
 <span th:errors="${reclamation.Fixe}" class="text-danger"></span>
 </div><div class="form-group">
+
+
 <label class="control-label">adresse</label>
 <input class="form-control" type="text" name="adresse" th:value="${reclamation.addresse}">
 <span th:errors="${reclamation.addresse}" class="text-danger"></span>
-</div><div class="form-group">
+</div>
+
+<div class="form-group">
 <label class="control-label">Code Postal</label>
 <input class="form-control" type="text" name="codeP" th:value="${reclamation.codeP}">
 <span th:errors="${reclamation.codeP}" class="text-danger"></span>
 </div>
+
 <div class="form-group">
 <label class="control-label">Type de reclamation</label>
 <input class="form-control" type="text" name="typeR" th:value="${reclamation.typeR}">
 <span th:errors="${reclamation.typeR}" class="text-danger" ></span>
 </div>
+
+
 <div class="form-group">
 <label class="control-label">explication de la  reclamation</label>
 <input class="form-control" type="text" name="explication" th:value="${reclamation.explication}">

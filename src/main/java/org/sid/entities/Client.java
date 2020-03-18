@@ -63,7 +63,7 @@ public class Client extends users implements Serializable {
 	}
 
 
-
+	
 
 	public List<Reclamation> getRec() {
 		return rec;

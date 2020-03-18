@@ -14,19 +14,18 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ClientController {
 	@Autowired
 	private ClientRepository CRepository ;
 	
-	@GetMapping("/ind")	
-	public String ind() {
-		return "index";
-	}
 	
 	
-		@GetMapping("/index")	
+	
+		@GetMapping("/user/index")	
 		//admin
 		public String chercher(Model model , @RequestParam(name="page", defaultValue="0") int page ,
 				@RequestParam(name="motCle", defaultValue="") String mc) {
@@ -35,7 +34,7 @@ public class ClientController {
 			model.addAttribute("pages",new int[pageClient.getTotalPages()]) ;
 			model.addAttribute("currentPage",page) ; 
 			model.addAttribute("motCle" , mc) ;
-			return "Client" ;
+			return "Client/Client" ;
 		}
 
 		@GetMapping("/admin/delete")
@@ -44,8 +43,8 @@ public class ClientController {
 			return"redirect:/user/index?page="+page+"&motCle"+motCle;
 		}
 		
-		//fafouna <3
-		@PostMapping("/admin/save")
+		
+		@RequestMapping(value="/admin/SaveC",method = RequestMethod.POST)
 		public String save (Model model , @Valid Client client , BindingResult bindingResult) {
 			if(bindingResult.hasErrors()) return"FormClient" ;
 			CRepository.save(client) ; 
