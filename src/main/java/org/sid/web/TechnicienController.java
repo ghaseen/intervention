@@ -77,22 +77,6 @@ public class TechnicienController {
 		}
 		
 
-		@GetMapping("/")
-		public String def() {
-
-			return "redirect:/user/index" ; 
-		}
-		
-		@GetMapping("/403")
-		public String notAutorized() {
-
-			return "403" ; 
-		}
-		@GetMapping("/login")
-		public String login() {
-
-			return "login" ; 
-		}
 		
 	}
 

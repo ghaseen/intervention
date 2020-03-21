@@ -65,15 +65,5 @@ Produit produit=produitRepository.findById(id).get();
 	}
 	
 
-	@GetMapping("/")
-	public String def() {
-
-		return "redirect:/user/index" ; 
-	}
 	
-	@GetMapping("/403")
-	public String notAutorized() {
-
-		return "403" ; 
-	}
 }
