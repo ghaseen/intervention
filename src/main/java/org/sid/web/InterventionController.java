@@ -3,6 +3,7 @@ package org.sid.web;
 import javax.validation.Valid;
 
 import org.sid.dao.InterventionRepository;
+import org.sid.dao.TechnicienRepository;
 import org.sid.entities.Intervention;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class InterventionController {
 	@Autowired
 	private InterventionRepository IRepository ;
+	@Autowired
+	private TechnicienRepository TRepository ;
+	
 
 	@GetMapping("/admin/intervention")
 	public String chercher1(Model model , @RequestParam(name="page", defaultValue="0") int page ,
@@ -33,13 +37,14 @@ public class InterventionController {
 	@GetMapping("/admin/deletei")
 	public String delete1 (Long id,int page , String motCle) {
 		IRepository.deleteById(id);
-		return"redirect:/admin/reclamation?page="+page+"&motCle"+motCle;
+		return"redirect:/admin/intervention?page="+page+"&motCle"+motCle;
 	}
 	
 	
 	@PostMapping("/admin/savei")
 	public String save1 (Model model , @Valid Intervention intervention , BindingResult bindingResult) {
-		if(bindingResult.hasErrors()) return"FormIntervention" ;
+		if(bindingResult.hasErrors()|| intervention==null) return"/Intervention/FormIntervention" ;
+		System.out.println(intervention.toString());
 		IRepository.save(intervention) ; 
 		return "redirect:/admin/intervention" ; 
 	}
@@ -51,7 +56,7 @@ Intervention intervention=IRepository.findById(idInt).get();
 
 		return "/Intervention/EditIntervention" ; 
 	}
-	//ghriba 5ater mahbtetchhhh
+	
 	@GetMapping("/admin/infoi")
 	public String formR (Model model , Long id) {
 Intervention intervention=IRepository.findById(id).get();
@@ -63,8 +68,11 @@ Intervention intervention=IRepository.findById(id).get();
 	@GetMapping("/admin/FormIntervention")
 	
 	public String form1 (Model model) {
-		model.addAttribute("intervention",new Intervention()) ; 
 		
+		
+		model.addAttribute("intervention",new Intervention()) ; 
+		model.addAttribute("techs",TRepository.findAll()) ; 
+
 		return "/Intervention/FormIntervention" ; 
 	}
 

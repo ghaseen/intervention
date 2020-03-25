@@ -50,7 +50,7 @@ public class TechnicienController {
 		public String save (Model model , @Valid technicien technicien , BindingResult bindingResult) {
 			if(bindingResult.hasErrors()) return"FormTechnicien" ;
 			TRepository.save(technicien) ; 
-			return "redirect:/user/technicien" ; 
+			return "redirect:/admin/technicien" ; 
 		}
 		
 		@GetMapping("/admin/editT")
@@ -58,7 +58,7 @@ public class TechnicienController {
 	technicien technicien=TRepository.findById(id).get();
 			model.addAttribute("technicien",technicien) ; 
 
-			return "/Technicien/EditTechnicien" ; 
+			return "/technicien/EditTechnicien" ; 
 		}
 		
 		@GetMapping("/admin/infoT")
@@ -66,14 +66,14 @@ public class TechnicienController {
 	technicien technicien=TRepository.findById(id).get();
 			model.addAttribute("technicien",technicien) ; 
 
-			return "/Technicien/infoT" ; 
+			return "/technicien/infoT" ; 
 		}
 		
 		@GetMapping("/admin/FormTechnicien")
 		public String form (Model model) {
 			model.addAttribute("technicien",new technicien()) ; 
 			
-			return "/Technicien/FormTechnicien" ; 
+			return "/technicien/FormTechnicien" ; 
 		}
 		
 

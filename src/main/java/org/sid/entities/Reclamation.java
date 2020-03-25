@@ -30,7 +30,7 @@ public class Reclamation implements Serializable {
 	@JoinColumn(name = "client_id")
 	private Client client;
 
-	public Reclamation(Long idR, String nomPrenom, String fixe, String addresse, int codeP, String typeR,
+	public Reclamation(Long idR, String fixe, String addresse, int codeP, String typeR,
 			String explication, Client client) {
 		super();
 		

@@ -16,7 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 @DiscriminatorColumn(name = "US_Type")
-@Table(name="user")
+@Table(name="users")
 public class users implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY) 

@@ -8,12 +8,12 @@ layout:decorate="layout"sin>
 </head>
 <body>
  
-<div layout:fragment="content1">
-<div class="col-md-6">
-<div class="panel panel-default">
-<div class="container">
-<div class="panel-heading"> nouvelle reclamation</div>
-<div class="panel-body">
+<div layout:fragment="content1" class="row">
+		<div class="col-md-10">
+			<div class="card">
+			
+					<div class="card-header"><h5 class="title">nouveau Reclamation</h5></div>
+					<div class="card-body">
 <form th:action="@{/admin/saver}" th:method="POST">
 
 <div class="form-group">

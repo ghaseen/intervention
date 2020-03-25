@@ -1,5 +1,8 @@
 package org.sid.web;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.validation.Valid;
 
 import org.sid.dao.ClientRepository;
@@ -9,6 +12,7 @@ import org.sid.entities.Reclamation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -46,7 +50,15 @@ public class ClientController {
 		
 		@RequestMapping(value="/admin/SaveC",method = RequestMethod.POST)
 		public String save (Model model , @Valid Client client , BindingResult bindingResult) {
-			if(bindingResult.hasErrors()) return"FormClient" ;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			//client.setDateN(sdf..format(client.getDateN()));
+			System.out.println(client.getDateN());
+			if(bindingResult.hasErrors()) return"/Client/FormClient" ;
+			
+			client.setActive(true);
+			client.setPassword(new BCryptPasswordEncoder().encode(client.getPassword()));
+			client.setRole("CLIENT");
+			
 			CRepository.save(client) ; 
 			return "redirect:/user/index" ; 
 		}

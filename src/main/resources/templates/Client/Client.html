@@ -9,10 +9,10 @@ layout:decorate="layout"xmlns:th="http://www.thymeLeaf.org"
 <
 </head>
 <body>
-<div layout:fragment="content1">
-<div class="container">
-	 	<div class="panel panel-primary">
-			<div class="panel-heading">Liste des Clients</div>
+<div layout:fragment="content1" class="row">
+<div class="col-md-12">
+	 	<div class="card">
+			<div class="card-header"><h5 class="title">Liste des Clients</h5></div>
 			<div >
 			<form th:action="@{/user/index}" method="get">
 			<label>Mot clé:</label>
@@ -21,9 +21,10 @@ layout:decorate="layout"xmlns:th="http://www.thymeLeaf.org"
 			</form>
 			</div>
 	
-			<div class="panel-body">
+			<div class="card-body">
+			<div class="table-responsive">
 				<table class="table">
-					<tr>
+					<thead class="text-primary">
 						<th >ID</th>
 						<th >sexe</th>
 						<th >nom</th>
@@ -35,14 +36,15 @@ layout:decorate="layout"xmlns:th="http://www.thymeLeaf.org"
 																<th >mail</th>
 										
 						
-					</tr>
+					</thead>
+					<tbody>
 					<tr th:each="c:${listClient}">
 						<td th:text="${c.id}"></td>
 												<td th:text="${c.sexe}"></td>
 												<td th:text="${c.nom}"></td>
 												<td th:text="${c.prenom}"></td>
 												<td th:text="${c.cin}"></td>
-												<td th:text="${c.dateN}"></td>
+												<td th:text="${#dates.format(c.dateN, 'dd-MMM-yyyy')}"></td>
 						
 						<td th:text="${c.adresse}"></td>
 						<td th:text="${c.mobile}"></td>
@@ -56,7 +58,9 @@ layout:decorate="layout"xmlns:th="http://www.thymeLeaf.org"
 						<td>								<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/infop(id=${c.id})}"> mes info</a>
 						</td>
 					</tr>
-				</table>  
+					</tbody>
+				</table> 
+				</div> 
 					<div>
 				<ul class="nav nav-pills">
     <li th:class="${currentPage==status.index}?'active':''" th:each="page,status:${pages}">

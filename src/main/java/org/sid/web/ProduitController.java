@@ -33,7 +33,7 @@ private ProduitRepository produitRepository ;
 		model.addAttribute("pages",new int[pageProduits.getTotalPages()]) ;
 		model.addAttribute("currentPage",page) ; 
 		model.addAttribute("motCle" , mc) ;
-		return "/Produits/Produits" ;
+		return "/produit/Produit" ;
 	}
 	
 	@GetMapping("/admin/deleteP")
@@ -60,8 +60,8 @@ Produit produit=produitRepository.findById(id).get();
 	@GetMapping("/admin/formProduit")
 	public String form (Model model) {
 		model.addAttribute("produit",new Produit()) ; 
-		
-		return "Produits/FormProduit" ; 
+		//ken jit rakezt m3aya rak 3rafteha chnya mochkel ama enty lehy fi tel
+		return "produit/FormProduit" ; 
 	}
 	
 

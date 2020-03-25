@@ -14,9 +14,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @SpringBootApplication
 @Entity
@@ -28,6 +31,8 @@ public class Client extends users implements Serializable {
 	private String nom ; 
 	private String prenom ;
 	private Long cin ;
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name="date_naissance")
 	private Date dateN ;
 	private String adresse ; 

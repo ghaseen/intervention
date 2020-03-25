@@ -19,12 +19,22 @@ layout:decorate="layout"sin >
 				 
 				 
 							<div class="form-group">
-								<label class="control-label">sexe</label>
-								 <input class="form-control" type="text" name="sexe" th:value="${client.sexe}"/> 
-								 <span th:errors="${client.sexe}" class="text-danger"></span>
+								<select th:field="${client.sexe}" class="form-control">
+								    <option th:value="'Homme'" th:text="Homme"></option>
+								    <option th:value="'Femme'" th:text="Femme"></option>
+								</select>
 							</div>
 							
-							
+							<div class="form-group">
+								<label class="control-label">nom utilisateur</label>
+								 <input class="form-control" type="text" name="username" th:value="${client.username}"/>
+								  <span th:errors="${client.username}" class="text-danger"></span>
+							</div>
+							<div class="form-group">
+								<label class="control-label">mot de passe</label>
+								 <input class="form-control" type="password" name="password" th:value="${client.password}"/>
+								  <span th:errors="${client.password}" class="text-danger"></span>
+							</div>
 							<div class="form-group">
 								<label class="control-label">nom</label>
 								 <input class="form-control" type="text" name="nom" th:value="${client.nom}"/>
@@ -50,7 +60,7 @@ layout:decorate="layout"sin >
 							
 							<div class="form-group">
 								<label class="control-label">date de naissance</label>
-								 <input class="form-control" type="date" name="daten"	th:value="${client.dateN}"/> 
+								 <input class="form-control" type="date" name="dateN"	th:value="${client.dateN}"/> 
 									<span th:errors="${client.dateN}" class="text-danger"></span>
 							</div>
 							
