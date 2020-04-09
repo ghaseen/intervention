@@ -2,10 +2,10 @@
 <html xmlns:th="http://www.thymeLeaf.org"
 xmlns:layout="http://www.ultraq.nz/thymeleaf/layout"
 layout:decorate="layout"
->
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="utf-8">
-<title>Insert title here</title>
+<title>Reclamation</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 </head>
@@ -32,8 +32,11 @@ layout:decorate="layout"
 												<th >code Postal</th>
 												<th >type reclamaion</th>
 										<th >explication</th>
-													
-										<th> client numero </th>
+										
+										
+											
+											<th> client name </th>
+										
 						
 					</tr>
 					<tr th:each="r:${listReclamation}">
@@ -46,7 +49,11 @@ layout:decorate="layout"
 						
 						<td th:text="${r.typeR}"></td>
 						<td th:text="${r.explication}"></td>
-						<td th:text="${r.client}"></td>
+						
+		<div sec:authorize="hasRole('ROLE_ADMIN')"><td th:text="${r.client.nom}"></td>	
+		</div>
+						
+						
 						<td> 
 						<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/deleter(id=${r.idR},page=${currentPage},motCle=${motCle})}"> Delete</a>
 						</td>

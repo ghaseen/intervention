@@ -11,5 +11,8 @@ import org.springframework.data.repository.query.Param;
 public interface InterventionRepository extends JpaRepository<Intervention, Long> {
 	@Query("select i from Intervention i where (i.localisation like:x)")
 	public Page<Intervention> findByDesignationContains(@Param("x")String mc, Pageable pageable);
+
+	@Query("select i from Intervention i where (i.technicien.id like:x)")
+	public Page<Intervention> findByIDtechnicienContains(@Param("x")Long idT, Pageable pageable);
 	
 }

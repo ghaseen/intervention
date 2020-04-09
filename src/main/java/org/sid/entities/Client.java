@@ -52,14 +52,16 @@ public class Client extends users implements Serializable {
 	
 	
 	
-	public Client(String sexe, String nom, String prenom, Long cin, Date dateN, 
-			String adresse, int mobile, String mail
+	public Client(String sexe, String nom, String prenom, 
+			int i, Date dateN, 
+			String adresse, int mobile, String mail,
+			String password,String username
 			) {
-		super();
+		super(username,password,true,"CLIENT");
 		this.sexe = sexe;
 		this.nom = nom;
 		this.prenom = prenom;
-		this.cin = cin;
+		this.cin =(long)i;
 		this.dateN = dateN;
 		this.adresse = adresse;
 		this.mobile = mobile;

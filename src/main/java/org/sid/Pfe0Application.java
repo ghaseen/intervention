@@ -5,9 +5,11 @@ import java.util.Date;
 import org.sid.dao.AdminRepository;
 import org.sid.dao.ClientRepository;
 import org.sid.dao.ReclamationRepository;
+import org.sid.dao.TechnicienRepository;
 import org.sid.dao.UsersRepository;
 import org.sid.entities.Admin;
 import org.sid.entities.Client;
+import org.sid.entities.technicien;
 import org.sid.entities.users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -27,6 +29,8 @@ private ClientRepository  cr ;
 private ReclamationRepository RRepository ;
 @Autowired
 private AdminRepository ur ;
+@Autowired
+private  TechnicienRepository tr ;
 
 
 	public static void main(String[] args) {
@@ -40,9 +44,11 @@ private AdminRepository ur ;
  
 	//ur.save(new Admin("admin",bcpe.encode("12345"),true,"mohamed","stamboli","ADMIN")) ;
 	
-	
-	
-	//cr.save(new Client("homme","mohamed","stambouli",123456,new Date(),"aaaaa",1452,"eeee",u1)) ;
+		
+		
+	/*cr.save(new Client("homme","ghassen","salhi",
+			123456,new Date(),"aaaaa",1452,"mohamed.stambouli@esen.tn",
+			bcpe.encode("12345"),"mohamed")) ;*/
 		
 	}
 	@Bean

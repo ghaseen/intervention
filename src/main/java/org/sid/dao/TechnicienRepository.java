@@ -12,4 +12,7 @@ public interface TechnicienRepository  extends JpaRepository<technicien, Long> {
 	@Query("select t from technicien t where (t.nom like:x)")
 	public Page<technicien> findByDesignationContains(@Param("x")String mc, Pageable pageable);
 	
+	@Query("select t from technicien t where (t.username like:x)")
+	public technicien ChercherTechnicienusername(@Param("x")String username);
+	
 }

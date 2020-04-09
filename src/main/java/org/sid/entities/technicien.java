@@ -34,8 +34,8 @@ public class technicien extends users implements Serializable {
 	
 	
 	public technicien( String nom, String prenom, Long cin, Date dateN, String spec, String adresse,
-			int mobile, String mail, String password) {
-		super();
+			int mobile, String mail,String username, String password) {
+		super(username,password,true,"TECHNICIEN");
 		
 		this.nom = nom;
 		this.prenom = prenom;

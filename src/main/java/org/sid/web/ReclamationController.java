@@ -24,6 +24,11 @@ public class ReclamationController {
 	private ReclamationRepository RRepository ;
 	@Autowired
 	private ClientRepository CRepo ;
+	
+	
+	
+	
+	
 	@GetMapping("/admin/reclamation")
 	public String chercher1(Model model , @RequestParam(name="page", defaultValue="0") int page ,
 			@RequestParam(name="motCle", defaultValue="") String mc) {
@@ -34,6 +39,24 @@ public class ReclamationController {
 		model.addAttribute("motCle" , mc) ;
 		return "/Reclamation/Reclamation" ;
 	}
+	@GetMapping("/client/reclamationC")
+	public String chercher2(Model model , @RequestParam(name="page", defaultValue="0") int page,
+			@RequestParam(name="motCle", defaultValue="") String mc) {
+		
+		
+		  Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		   
+	      String username = ((UserDetails)principal).getUsername();
+	 		    
+		Client cl=CRepo.ChercherClientusername(username);
+		Page<Reclamation>pageReclamation=RRepository.findByIDClientContains(cl.getId(),PageRequest.of(page, 5)) ;
+		model.addAttribute("listReclamation",pageReclamation.getContent()) ;
+		model.addAttribute("pages",new int[pageReclamation.getTotalPages()]) ;
+		model.addAttribute("currentPage",page) ; 
+		
+		return "/Reclamation/ReclamationC" ;
+	}
+	 
 
 	@GetMapping("/admin/deleter")
 	public String delete1 (Long id,int page , String motCle) {
@@ -42,7 +65,15 @@ public class ReclamationController {
 	}
 	
 	
-	@PostMapping("/admin/saver")
+	@GetMapping("/client/deleter")
+	public String deleteclient (Long id,int page , String motCle) {
+		RRepository.deleteById(id);
+		return"redirect:/client/reclamationC?page="+page+"&motCle"+motCle;
+	}
+	
+	
+	
+	@PostMapping("/client/saver")
 	public String save1 (Model model , @Valid Reclamation reclamation , BindingResult bindingResult) {
 		if(bindingResult.hasErrors()) return"FormReclamation" ;
 		
@@ -54,26 +85,22 @@ public class ReclamationController {
 		reclamation.setClient(cl);
 		
 		RRepository.save(reclamation) ; 
-		return "redirect:/admin/reclamation" ; 
+		return "redirect:/client/reclamationC" ; 
 	}
 	
-	@GetMapping("/admin/editr")
-	public String form1 (Model model , Long id) {
-Reclamation reclamation=RRepository.findById(id).get();
-		model.addAttribute("reclamation",reclamation) ; 
+	
+	
 
-		return "/Reclamation/EditReclamation" ; 
-	}
 	
 	@GetMapping("/admin/infor")
 	public String formR (Model model , Long id) {
 Reclamation reclamation=RRepository.findById(id).get();
 		model.addAttribute("reclamation",reclamation) ; 
 
-		return "infoP" ; 
+		return "infoR" ; 
 	}
 	
-	@GetMapping("/admin/FormReclamation")
+	@GetMapping("/client/FormReclamation")
 	
 	public String form1 (Model model) {
 		model.addAttribute("reclamation",new Reclamation()) ; 
@@ -83,6 +110,39 @@ Reclamation reclamation=RRepository.findById(id).get();
 
 	
 	
+	@GetMapping("/client/editr")
+	public String form1 (Model model , Long id) {
+Reclamation reclamation=RRepository.findById(id).get();
+		model.addAttribute("reclamation",reclamation) ; 
 
+		return "/Reclamation/EditReclamation" ; 
+	}
+	
+	@PostMapping("/client/savereclam")
+	public String editreclam(Model model,@Valid Reclamation reclamation ,BindingResult bindingResult,Long idc) {
+		if(bindingResult.hasErrors())return "redirect:/client/editr";
+		Reclamation rec=RRepository.findById(reclamation.getIdR()).get();
+		
+		if(reclamation.getAddresse()==null || reclamation.getAddresse().isEmpty()) 
+			reclamation.setAddresse(rec.getAddresse());
+		if(reclamation.getFixe()==null || reclamation.getFixe().isEmpty()) 
+			reclamation.setFixe(rec.getFixe());
+		if(reclamation.getExplication()==null || reclamation.getExplication().isEmpty()) 
+			reclamation.setExplication(rec.getExplication());
+		if(reclamation.getTypeR()==null || reclamation.getTypeR().isEmpty()) 
+			reclamation.setTypeR(rec.getTypeR());
+		if(reclamation.getCodeP()==0  ) 
+			reclamation.setCodeP(rec.getCodeP());
+		if(reclamation.getClient()==null)
+			reclamation.setClient(CRepo.findById(idc).get());
+		
+			
+			
+		RRepository.save(reclamation);
+		
+		return"redirect:/client/reclamationC";
+	}
+
+	
 
 }
