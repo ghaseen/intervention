@@ -25,31 +25,33 @@ layout:decorate="layout"
 			<div class="table-responsive">
 				<table class="table">
 				<thead class="text-primary">
-						<th >IDInt</th>
 						
 						
-												<th >IDT</th>
+						
+												<th >Technicien</th>
 												<th >dateInt</th>
 												<th >localistaion</th>
+												<th>Reclamation N°</th>
+												<th>Action</th>
 										
 						
 					</thead>
 					<tbody>
 					<tr th:each="i:${listIntervention}">
-						<td th:text="${i.idInt}"></td>
+						<td th:text="${i.technicien.nom +' '+ i.technicien.prenom}"></td>
 												
 									
 												<td th:text="${i.dateInt}"></td>
 												<td th:text="${i.localisation}"></td>
+												<td th:text="${i.reclamation.idR}"></td>
 												
 						
 						
 						
 						<td> 
 						<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/deleter(id=${i.idInt},page=${currentPage},motCle=${motCle})}"> Delete</a>
-						</td>
-						<td> 
-						<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/editr(id=${i.idInt})}"> Edit</a>		
+						 
+						<a  class="btn btn-info" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/editr(id=${i.idInt})}"> Edit</a>		
 						</td>
 						
 					</tr>
@@ -60,8 +62,7 @@ layout:decorate="layout"
     <li th:class="${currentPage==status.index}?'active':''" th:each="page,status:${pages}">
 				<a th:href="@{/admin/intervention(page=${status.index},motCle=${motCle})}"  th:text="${status.index}"></a>
    		 </li>
-   		 <li><a type="button" class="btn btn-dark" th:href="@{/admin/FormIntervention}">Ajouter une Intervention </a>
-   		 </li>
+   		
 		</ul>
 			</div>
 				

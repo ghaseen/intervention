@@ -3,8 +3,11 @@ package org.sid.web;
 import javax.validation.Valid;
 
 import org.sid.dao.ClientRepository;
+import org.sid.dao.ProduitRepository;
 import org.sid.dao.ReclamationRepository;
+import org.sid.dao.TechnicienRepository;
 import org.sid.entities.Client;
+import org.sid.entities.Intervention;
 import org.sid.entities.Reclamation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,12 +27,16 @@ public class ReclamationController {
 	private ReclamationRepository RRepository ;
 	@Autowired
 	private ClientRepository CRepo ;
+	@Autowired
+	private TechnicienRepository TRepository;
+	@Autowired
+	private ProduitRepository PRepository;
 	
 	
 	
 	
 	
-	@GetMapping("/admin/reclamation/")
+	@GetMapping("/admin/reclamation")
 	public String chercher1(Model model , @RequestParam(name="page", defaultValue="0") int page ,
 			@RequestParam(name="motCle", defaultValue="") String mc) {
 		Page<Reclamation>pageReclamation=RRepository.findByDesignationContains("%"+mc+"%",PageRequest.of(page, 5)) ;
@@ -55,6 +62,17 @@ public class ReclamationController {
 		model.addAttribute("currentPage",page) ; 
 		
 		return "/Reclamation/ReclamationC" ;
+	}
+	@GetMapping("/admin/sesreclam")
+	public String reclamations(Model model , @RequestParam(name="page", defaultValue="0") int page,
+			Long id) {
+		
+		Page<Reclamation>pageReclamation=RRepository.findByIDClientContains(id,PageRequest.of(page, 5)) ;
+		model.addAttribute("listReclamation",pageReclamation.getContent()) ;
+		model.addAttribute("pages",new int[pageReclamation.getTotalPages()]) ;
+		model.addAttribute("currentPage",page) ; 
+		
+		return "/Reclamation/Reclamation" ;
 	}
 	 
 
@@ -103,7 +121,11 @@ Reclamation reclamation=RRepository.findById(id).get();
 	@GetMapping("/client/FormReclamation")
 	
 	public String form1 (Model model) {
+		
+		
 		model.addAttribute("reclamation",new Reclamation()) ; 
+		
+		model.addAttribute("prods",PRepository.findAll()) ; 
 		
 		return "/Reclamation/FormReclamation" ; 
 	}
@@ -141,6 +163,20 @@ Reclamation reclamation=RRepository.findById(id).get();
 		RRepository.save(reclamation);
 		
 		return"redirect:/client/reclamationC";
+	}
+	
+	@GetMapping("/admin/details")
+	public String ReglerReclamation(int id,Model model) {
+		Intervention inter=new Intervention();
+						
+		Reclamation rec=RRepository.findById((long)id).get();
+		inter.setLocalisation(rec.getAddresse()+" "+rec.getCodeP());
+	
+		inter.setReclamation(rec);
+		model.addAttribute("techs",TRepository.findAll()) ; 
+		model.addAttribute("reclamation",rec) ; 
+		model.addAttribute("intervention",inter) ; 
+		return "reclamation/details";
 	}
 
 	

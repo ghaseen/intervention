@@ -2,11 +2,13 @@ package org.sid.entities;
 
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Size;
 
@@ -19,13 +21,20 @@ public class Produit implements Serializable {
 	@NotNull
 	@Size (min=5, max=70)
 	private String designation ;
-	@DecimalMin("100")
-	private double prix ;
-	private int qunatite ;
+	
+	
+	@OneToMany(mappedBy="produit")
+	private List<Reclamation> reclamations;
 	
 	
 	
 	
+	public List<Reclamation> getReclamations() {
+		return reclamations;
+	}
+	public void setReclamations(List<Reclamation> reclamations) {
+		this.reclamations = reclamations;
+	}
 	public long getId() {
 		return id;
 	}
@@ -35,11 +44,10 @@ public class Produit implements Serializable {
 	public Produit() {
 		
 	}
-	public Produit( String designation, double prix, int qunatite) {
+	public Produit( String designation) {
 		
 		this.designation = designation;
-		this.prix = prix;
-		this.qunatite = qunatite;
+		
 	}
 
 	public String getDesignation() {
@@ -48,17 +56,6 @@ public class Produit implements Serializable {
 	public void setDesignation(String designation) {
 		this.designation = designation;
 	}
-	public double getPrix() {
-		return prix;
-	}
-	public void setPrix(double prix) {
-		this.prix = prix;
-	}
-	public int getQunatite() {
-		return qunatite;
-	}
-	public void setQunatite(int qunatite) {
-		this.qunatite = qunatite;
-	}
+	
 
 }

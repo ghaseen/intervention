@@ -28,7 +28,6 @@ public class TechnicienController {
 	
 	
 		@GetMapping("/admin/technicien")	
-		//admin
 		public String chercher(Model model , @RequestParam(name="page", defaultValue="0") int page ,
 				@RequestParam(name="motCle", defaultValue="") String mc) {
 			Page<technicien>pageTechnicien=TRepository.findByDesignationContains("%"+mc+"%",PageRequest.of(page, 5)) ;
@@ -75,6 +74,8 @@ public class TechnicienController {
 			
 			return "/technicien/FormTechnicien" ; 
 		}
+		
+		
 		
 
 		

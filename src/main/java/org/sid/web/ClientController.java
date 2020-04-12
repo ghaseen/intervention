@@ -35,8 +35,7 @@ public class ClientController {
 	
 	
 	
-		@GetMapping("/admin/index")	
-		//admin
+		@GetMapping("/admin/clients")	
 		public String chercher(Model model , @RequestParam(name="page", defaultValue="0") int page ,
 				@RequestParam(name="motCle", defaultValue="") String mc) {
 			Page<Client>pageClient=CRepository.findByDesignationContains("%"+mc+"%",PageRequest.of(page, 5)) ;

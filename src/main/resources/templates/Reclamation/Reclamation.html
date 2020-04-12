@@ -54,11 +54,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 						<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/client/deleter(id=${r.idR},page=${currentPage},motCle=${motCle})}"> Delete</a>
 						</td>
 						<td> 
-						<a  class="btn btn-info" th:href="@{/client/editr(id=${r.idR})}"> Edit</a>		
+						<a  class="btn btn-info" th:href="@{/admin/details(id=${r.idR})}"> Regler</a>		
 						</td>
-						<td> 
-						<a  class="btn btn-info" th:href="@{/client/editr(id=${r.idR})}"> Edit</a>		
-						</td>
+						
 					</tr>
 				
 				

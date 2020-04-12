@@ -1,6 +1,7 @@
 package org.sid.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,6 +30,20 @@ public class Reclamation implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private Client client;
+	
+	@ManyToOne
+	@JoinColumn(name = "produit_id",referencedColumnName = "id")
+	private Produit produit;
+
+	
+	
+	public Produit getProduit() {
+		return produit;
+	}
+
+	public void setProduit(Produit produit) {
+		this.produit = produit;
+	}
 
 	public Reclamation(Long idR, String fixe, String addresse, int codeP, String typeR,
 			String explication, Client client) {

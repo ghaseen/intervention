@@ -13,20 +13,27 @@ layout:decorate="layout"xmlns:th="http://www.thymeLeaf.org"
 <div class="col-md-12">
 	 	<div class="card">
 			<div class="card-header"><h5 class="title">Liste des Clients</h5></div>
-			<div >
+			<div class="row">
+			<div class="col-md-5 pr-1">
 			<form th:action="@{/user/index}" method="get">
 			<label>Mot clé:</label>
 			<input type="text" name="motCle" th:value="${motCle}">
 			<button type="submit" class="btn btn-primary">chercher</button>
+			
 			</form>
+			
+			</div >
+			<div class="col-md-5 pr-1 ">
+			<a href="/admin/FormClient"><button class="btn btn-primary  pull-right" type="button" >Ajouter un client</button></a>
 			</div>
-	
+			
+			
+			</div>
 			<div class="card-body">
 			<div class="table-responsive">
 				<table class="table">
 					<thead class="text-primary">
-						<th >ID</th>
-						<th >sexe</th>
+						
 						<th >nom</th>
 						<th >prenom</th>
 												<th >CIN</th>
@@ -34,13 +41,16 @@ layout:decorate="layout"xmlns:th="http://www.thymeLeaf.org"
 												<th >adresse</th>
 										<th >mobile</th>
 																<th >mail</th>
+																<th>
+																Action
+																</th>
 										
 						
 					</thead>
 					<tbody>
 					<tr th:each="c:${listClient}">
 						<td th:text="${c.id}"></td>
-												<td th:text="${c.sexe}"></td>
+											
 												<td th:text="${c.nom}"></td>
 												<td th:text="${c.prenom}"></td>
 												<td th:text="${c.cin}"></td>
@@ -49,14 +59,13 @@ layout:decorate="layout"xmlns:th="http://www.thymeLeaf.org"
 						<td th:text="${c.adresse}"></td>
 						<td th:text="${c.mobile}"></td>
 						<td th:text="${c.mail}"></td>
-						<td> 
+						<td><a  class="btn btn-primary" th:href="@{/admin/sesreclam(id=${c.id})}"> Reclamations</a>
+						
+						
 						<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/delete(id=${c.id},page=${currentPage},motCle=${motCle})}"> Delete</a>
 						</td>
-						<td> 
-						<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/edit(id=${c.id})}"> Edit</a>		
-						</td>
-						<td>								<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/infop(id=${c.id})}"> mes info</a>
-						</td>
+						
+						
 					</tr>
 					</tbody>
 				</table> 

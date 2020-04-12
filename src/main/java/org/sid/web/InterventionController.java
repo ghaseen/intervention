@@ -1,8 +1,20 @@
 package org.sid.web;
 
-import javax.validation.Valid;
+import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.validation.Valid;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.sid.dao.InterventionRepository;
+import org.sid.dao.ReclamationRepository;
 import org.sid.dao.TechnicienRepository;
 import org.sid.entities.Client;
 import org.sid.entities.Intervention;
@@ -26,7 +38,8 @@ public class InterventionController {
 	private InterventionRepository IRepository ;
 	@Autowired
 	private TechnicienRepository TRepository ;
-	
+	@Autowired
+	private ReclamationRepository RRepository;
 
 	@GetMapping("/admin/intervention")
 	public String chercher1(Model model , @RequestParam(name="page", defaultValue="0") int page ,
@@ -66,11 +79,50 @@ public class InterventionController {
 	}
 	
 	
-	@PostMapping("/technicien/savei")
-	public String save1 (Model model , @Valid Intervention intervention , BindingResult bindingResult) {
+	@PostMapping("/admin/savei")
+	public String save1 (Model model , @Valid Intervention intervention ,Long id, BindingResult bindingResult) {
+		Reclamation rec=RRepository.findById((long)id).get();
+		intervention.setLocalisation(rec.getAddresse()+" "+rec.getCodeP());
+		intervention.setReclamation(rec);
 		if(bindingResult.hasErrors()|| intervention==null) return"/Intervention/FormIntervention" ;
 		System.out.println(intervention.toString());
-		IRepository.save(intervention) ; 
+		IRepository.save(intervention) ;
+		
+		
+		Properties props = new Properties();
+		   props.put("mail.smtp.auth", "true");
+		   props.put("mail.smtp.starttls.enable", "true");
+		   props.put("mail.smtp.host", "smtp.gmail.com");
+		   props.put("mail.smtp.port", "587");
+		   
+		   Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+			   @Override
+		      protected PasswordAuthentication getPasswordAuthentication() {
+		         return new PasswordAuthentication("ghassen.salhi@esen.tn", "krjfyjayfugyheax");
+		      }
+		   });
+		   try {
+
+	            Message message = new MimeMessage(session);
+	           
+	            message.setRecipient(Message.RecipientType.TO,new InternetAddress(rec.getClient().getMail()));
+	            message.setSubject("Réclamation traité");
+	            message.setText("Votre réclamation à propos "+rec.getTypeR()+"  une intervention est planifié poru le "+
+	    	            intervention.getDateInt()+" \n le technicien "+intervention.getTechnicien().getNom() +" "+
+	    	            intervention.getTechnicien().getPrenom()+" qui va fixer votre probléme.\nCordialement.");
+
+	            Transport.send(message);
+
+	        
+
+	        } catch (MessagingException e) {
+	            e.printStackTrace();
+	        }
+		
+		
+		
+		
+		
 		return "redirect:/admin/intervention" ; 
 	}
 	
@@ -97,12 +149,31 @@ Intervention intervention=IRepository.findById(id).get();
 		
 		model.addAttribute("intervention",new Intervention()) ; 
 		model.addAttribute("techs",TRepository.findAll()) ; 
+		
+		
+		
+		
+		
 
 		return "/Intervention/FormIntervention" ; 
+	}
+	
+	
+	
+	@GetMapping("/admin/sesintervention")
+	public String sesinterventions(Model model , @RequestParam(name="page", defaultValue="0") int page ,
+		Long id) {
+		Page<Intervention>pageIntervention=IRepository.findByIDtechnicienContains(id,PageRequest.of(page, 5));
+		model.addAttribute("listIntervention",pageIntervention.getContent()) ;
+		model.addAttribute("pages",new int[pageIntervention.getTotalPages()]) ;
+		model.addAttribute("currentPage",page) ; 
+		
+		return "/Intervention/Intervention" ;
 	}
 
 	
 	
 
+	
 
 }
