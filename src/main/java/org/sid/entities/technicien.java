@@ -33,13 +33,15 @@ public class technicien extends users implements Serializable {
 	private List<Intervention> inter; 
 	
 	
-	public technicien( String nom, String prenom, Long cin, Date dateN, String spec, String adresse,
+	public technicien( String nom, String prenom, 
+			int cin, Date dateN, String spec, 
+			String adresse,
 			int mobile, String mail,String username, String password) {
 		super(username,password,true,"TECHNICIEN");
 		
 		this.nom = nom;
 		this.prenom = prenom;
-		this.cin = cin;
+		this.cin = (long)cin;
 		this.dateN = dateN;
 		this.spec = spec;
 		this.adresse = adresse;

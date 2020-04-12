@@ -5,76 +5,87 @@ layout:decorate="layout"
 xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="utf-8">
-<title>Reclamation</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<title>Reclamations</title>
 
 </head>
 <body>
 <div layout:fragment="content1">
 <div class="container">
-	 	<div class="panel panel-primary">
-			<div class="panel-heading">Liste des reclamations</div>
+	 	<div class="col-md-15">
+			<div class="card">
+			
+					<div class="card-header">Mes reclamations</div>
 			<div >
-			<form th:action="@{/admin/reclamation}" method="get">
+			
+			
+			<form th:action="@{/client/reclamationC}" method="get">
 			<label>Mot clé:</label>
 			<input type="text" name="motCle" th:value="${motCle}">
 			<button type="submit" class="btn btn-primary">chercher</button>
 			</form>
+			
 			</div>
-	
-			<div class="panel-body">
+			
+			
+			
+			<div class="card-body">
 				<table class="table">
 					<tr>
 						<th >IDR</th>
-						
 						<th >Fixe</th>
-												<th >adresse</th>
-												<th >code Postal</th>
-												<th >type reclamaion</th>
-										<th >explication</th>
-										
-										
-											
-											<th> client name </th>
-										
-						
+						<th >adresse</th>
+						<th >code Postal</th>
+						<th >type reclamaion</th>
+						<th >explication</th>
+				
 					</tr>
-					<tr th:each="r:${listReclamation}">
+					
+					
+				
+					<tr  th:unless="${#lists.isEmpty(listReclamation)}" th:each="r:${listReclamation}">
 						<td th:text="${r.idR}"></td>
-												
-									
-												<td th:text="${r.Fixe}"></td>
-												<td th:text="${r.addresse}"></td>
-												<td th:text="${r.codeP}"></td>
-						
+						<td th:text="${r.Fixe}"></td>
+						<td th:text="${r.addresse}"></td>
+						<td th:text="${r.codeP}"></td>
 						<td th:text="${r.typeR}"></td>
 						<td th:text="${r.explication}"></td>
 						
-		<div sec:authorize="hasRole('ROLE_ADMIN')"><td th:text="${r.client.nom}"></td>	
-		</div>
-						
-						
 						<td> 
-						<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/deleter(id=${r.idR},page=${currentPage},motCle=${motCle})}"> Delete</a>
+						<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/client/deleter(id=${r.idR},page=${currentPage},motCle=${motCle})}"> Delete</a>
 						</td>
 						<td> 
-						<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/editr(id=${r.idR})}"> Edit</a>		
+						<a  class="btn btn-info" th:href="@{/client/editr(id=${r.idR})}"> Edit</a>		
 						</td>
-						
+						<td> 
+						<a  class="btn btn-info" th:href="@{/client/editr(id=${r.idR})}"> Edit</a>		
+						</td>
 					</tr>
+				
+				
+				
+			
+				
+				
+				
+				
 				</table>  
-					<div>
-				<ul class="nav nav-pills">
-    <li th:class="${currentPage==status.index}?'active':''" th:each="page,status:${pages}">
-				<a th:href="@{/admin/reclamation(page=${status.index},motCle=${motCle})}"  th:text="${status.index}"></a>
-   		 </li>
-   		 <li><a type="button" class="btn btn-dark" th:href="@{/admin/FormReclamation}">Ajouter une reclamation </a>
-   		 </li>
-		</ul>
+	
+		
+		<nav aria-label="...">
+  <ul class="pagination">
+   
+    <li class="" th:classappend="${currentPage==status.index}?'active':''" th:each="page,status:${pages}">
+    
+    
+    
+    <a th:href="@{/client/reclamationC(page=${status.index},motCle=${motCle})}"  th:text="${status.index}"></a></li>
+    
+  </ul>
+</nav>
+		
+	
 			</div>
-				
-				
-			</div>
+			
 		</div>
 	</div>
 	
@@ -84,6 +95,6 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 </div>
 			
-
+</div>
 </body>
 </html>

@@ -44,7 +44,10 @@ private  TechnicienRepository tr ;
  
 	//ur.save(new Admin("admin",bcpe.encode("12345"),true,"mohamed","stamboli","ADMIN")) ;
 	
-		
+		tr.save(new technicien("daoud", "ka7la", 111115, 
+				new Date(), "chicha", "ahram",
+			1478523, "daoud69.ahram@gmail.com",
+			"daoudachicha95", bcpe.encode("chicha")));
 		
 	/*cr.save(new Client("homme","ghassen","salhi",
 			123456,new Date(),"aaaaa",1452,"mohamed.stambouli@esen.tn",

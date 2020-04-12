@@ -27,6 +27,8 @@ public class Intervention  implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="tech_id")
 	private technicien technicien  ;
+	
+	
 	public Intervention(int idInt, Date dateInt, String localisation, technicien technicien) {
 		super();
 		this.idInt = idInt;

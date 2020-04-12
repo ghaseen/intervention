@@ -29,7 +29,7 @@ public class ReclamationController {
 	
 	
 	
-	@GetMapping("/admin/reclamation")
+	@GetMapping("/admin/reclamation/")
 	public String chercher1(Model model , @RequestParam(name="page", defaultValue="0") int page ,
 			@RequestParam(name="motCle", defaultValue="") String mc) {
 		Page<Reclamation>pageReclamation=RRepository.findByDesignationContains("%"+mc+"%",PageRequest.of(page, 5)) ;
