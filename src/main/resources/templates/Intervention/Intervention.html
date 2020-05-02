@@ -51,7 +51,7 @@ layout:decorate="layout"
 						<td> 
 						<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/deleter(id=${i.idInt},page=${currentPage},motCle=${motCle})}"> Delete</a>
 						 
-						<a  class="btn btn-info" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/editr(id=${i.idInt})}"> Edit</a>		
+						<a  class="btn btn-info"  th:href="@{/admin/editi(idInt=${i.idInt})}"> Edit</a>		
 						</td>
 						
 					</tr>

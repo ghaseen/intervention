@@ -51,6 +51,11 @@ public class InterventionController {
 		model.addAttribute("motCle" , mc) ;
 		return "/Intervention/Intervention" ;
 	}
+	
+	
+	
+	
+	
 	@GetMapping("/technicien/interventionT")
 	public String chercher2(Model model , @RequestParam(name="page", defaultValue="0") int page ,
 			@RequestParam(name="motCle", defaultValue="") String mc) {
@@ -85,41 +90,11 @@ public class InterventionController {
 		intervention.setLocalisation(rec.getAddresse()+" "+rec.getCodeP());
 		intervention.setReclamation(rec);
 		if(bindingResult.hasErrors()|| intervention==null) return"/Intervention/FormIntervention" ;
-		System.out.println(intervention.toString());
+		
 		IRepository.save(intervention) ;
 		
 		
-		Properties props = new Properties();
-		   props.put("mail.smtp.auth", "true");
-		   props.put("mail.smtp.starttls.enable", "true");
-		   props.put("mail.smtp.host", "smtp.gmail.com");
-		   props.put("mail.smtp.port", "587");
-		   
-		   Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-			   @Override
-		      protected PasswordAuthentication getPasswordAuthentication() {
-		         return new PasswordAuthentication("ghassen.salhi@esen.tn", "krjfyjayfugyheax");
-		      }
-		   });
-		   try {
-
-	            Message message = new MimeMessage(session);
-	           
-	            message.setRecipient(Message.RecipientType.TO,new InternetAddress(rec.getClient().getMail()));
-	            message.setSubject("Réclamation traité");
-	            message.setText("Votre réclamation à propos "+rec.getTypeR()+"  une intervention est planifié poru le "+
-	    	            intervention.getDateInt()+" \n le technicien "+intervention.getTechnicien().getNom() +" "+
-	    	            intervention.getTechnicien().getPrenom()+" qui va fixer votre probléme.\nCordialement.");
-
-	            Transport.send(message);
-
-	        
-
-	        } catch (MessagingException e) {
-	            e.printStackTrace();
-	        }
-		
-		
+		sendmail(intervention,rec);
 		
 		
 		
@@ -127,12 +102,29 @@ public class InterventionController {
 	}
 	
 	@GetMapping("/admin/editi")
-	public String form1 (Model model , Long idInt) {
-Intervention intervention=IRepository.findById(idInt).get();
+	public String form1 (Model model , long idInt) {
+		Intervention intervention=IRepository.findById((long)idInt).get();
 		model.addAttribute("intervention",intervention) ; 
 
 		return "/Intervention/EditIntervention" ; 
 	}
+	
+	@PostMapping("/admin/modififinter")
+	public String modifinter (Model model , @Valid Intervention intervention,BindingResult bindingResult) {
+		
+		if(bindingResult.hasErrors()) {
+			model.addAttribute("intervention",intervention) ; 
+
+			return "/Intervention/EditIntervention" ; 
+		}
+		IRepository.save(intervention) ;
+
+		sendmail(intervention,intervention.getReclamation());
+
+		return "/Intervention/EditIntervention" ; 
+	}
+	
+	
 	
 	@GetMapping("/admin/infoi")
 	public String formR (Model model , Long id) {
@@ -172,7 +164,39 @@ Intervention intervention=IRepository.findById(id).get();
 	}
 
 	
-	
+	public void sendmail(Intervention intervention , Reclamation rec) {
+
+		Properties props = new Properties();
+		   props.put("mail.smtp.auth", "true");
+		   props.put("mail.smtp.starttls.enable", "true");
+		   props.put("mail.smtp.host", "smtp.gmail.com");
+		   props.put("mail.smtp.port", "587");
+		   
+		   Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+			   @Override
+		      protected PasswordAuthentication getPasswordAuthentication() {
+		         return new PasswordAuthentication("ghassen.salhi@esen.tn", "krjfyjayfugyheax");
+		      }
+		   });
+		   try {
+
+	            Message message = new MimeMessage(session);
+	           
+	            message.setRecipient(Message.RecipientType.TO,new InternetAddress(rec.getClient().getMail()));
+	            message.setSubject("Réclamation traité");
+	            message.setText("Votre réclamation à propos "+rec.getTypeR()+"  une intervention est planifié poru le "+
+	    	            intervention.getDateInt()+" \n le technicien "+intervention.getTechnicien().getNom() +" "+
+	    	            intervention.getTechnicien().getPrenom()+" qui va fixer votre probléme.\nCordialement.");
+
+	            Transport.send(message);
+
+	        
+
+	        } catch (MessagingException e) {
+	            e.printStackTrace();
+	        }
+		
+	}
 
 	
 

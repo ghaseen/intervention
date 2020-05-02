@@ -22,11 +22,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Intervention  implements Serializable{
 	@Id  @GeneratedValue(strategy=GenerationType.IDENTITY) 
 
-	private  int idInt ;
+	private  Long idInt ;
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateInt ;
 	private String localisation ; 
+	private String detaille;
 	@ManyToOne
 	@JoinColumn(name="tech_id")
 	private technicien technicien  ;
@@ -43,21 +44,32 @@ public class Intervention  implements Serializable{
 	public void setReclamation(Reclamation reclamation) {
 		this.reclamation = reclamation;
 	}
-	public Intervention(int idInt, Date dateInt, String localisation, technicien technicien) {
+	public Intervention(Long idInt, Date dateInt, String localisation, technicien technicien,String detaille) {
 		super();
 		this.idInt = idInt;
 		this.dateInt = dateInt;
 		this.localisation = localisation;
 		this.technicien = technicien;
+		this.detaille=detaille;
 	}
 	public Intervention() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public int getIdInt() {
+	
+	
+	
+	
+	public String getDetaille() {
+		return detaille;
+	}
+	public void setDetaille(String detaille) {
+		this.detaille = detaille;
+	}
+	public Long getIdInt() {
 		return idInt;
 	}
-	public void setIdInt(int idInt) {
+	public void setIdInt(Long idInt) {
 		this.idInt = idInt;
 	}
 	public Date getDateInt() {

@@ -16,4 +16,8 @@ public interface ClientRepository extends JpaRepository<Client,Long> {
 	@Query("select c from Client c where (c.username like:x)")
 	public Client ChercherClientusername(@Param("x")String username);
 	
+	@Query("select c from Client c where (c.mail like:x)")
+	public Client findbymail(@Param("x")String mail);
+	
+	
 }

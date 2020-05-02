@@ -49,10 +49,10 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 						<td th:text="${p.designation}"></td>
 												
 						<td> 
-						<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/deletep(id=${p.id},page=${currentPage},motCle=${motCle})}"> Delete</a>
+						<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/deleteP(id=${p.id},page=${currentPage},motCle=${motCle})}"> Delete</a>
 						</td>
 						<td> 
-						<a  class="btn btn-info" th:href="@{/client/editp(id=${p.id})}"> Edit</a>		
+						<a  class="btn btn-info" th:href="@{/admin/editP(id=${p.id})}"> Edit</a>		
 						</td>
 						
 					</tr>

@@ -55,7 +55,7 @@ private ProduitRepository produitRepository ;
 Produit produit=produitRepository.findById(id).get();
 		model.addAttribute("produit",produit) ; 
 
-		return "Produits/EditProduit" ; 
+		return "Produit/EditProduit" ; 
 	}
 	@GetMapping("/admin/formProduit")
 	public String form (Model model) {
