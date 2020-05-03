@@ -104,24 +104,27 @@ public class InterventionController {
 	@GetMapping("/admin/editi")
 	public String form1 (Model model , long idInt) {
 		Intervention intervention=IRepository.findById((long)idInt).get();
+		model.addAttribute("techs",TRepository.findAll()) ; 
 		model.addAttribute("intervention",intervention) ; 
 
 		return "/Intervention/EditIntervention" ; 
 	}
 	
 	@PostMapping("/admin/modififinter")
-	public String modifinter (Model model , @Valid Intervention intervention,BindingResult bindingResult) {
+	public String modifinter (Model model , @Valid Intervention intervention,BindingResult bindingResult,long reclamation) {
 		
 		if(bindingResult.hasErrors()) {
 			model.addAttribute("intervention",intervention) ; 
 
 			return "/Intervention/EditIntervention" ; 
 		}
+		Reclamation rec=RRepository.findById(reclamation).get();
+		intervention.setReclamation(rec);
 		IRepository.save(intervention) ;
 
 		sendmail(intervention,intervention.getReclamation());
 
-		return "/Intervention/EditIntervention" ; 
+		return "/admin/intervention"; 
 	}
 	
 	

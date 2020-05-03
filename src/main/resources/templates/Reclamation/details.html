@@ -44,7 +44,8 @@
 						<div class="author">
 							<a href="#"> <img class="avatar border-gray"
 								src="../assets/img/mike.jpg" alt="...">
-								<h5 class="title" th:text="${reclamation.client.nom}+' '+ ${reclamation.client.prenom}"></h5>
+								<h5 class="title"
+									th:text="${reclamation.client.nom}+' '+ ${reclamation.client.prenom}"></h5>
 							</a>
 							<p class="description" th:text="|Type:${reclamation.typeR}">
 
@@ -80,8 +81,15 @@
 						</div>
 
 
-						<input type="hidden" name="id" th:value="${intervention.reclamation.idR}">
-
+						<input type="hidden" name="id"
+							th:value="${intervention.reclamation.idR}">
+						<div class="form-group">
+							<label class="control-label">Detaille</label>
+							<textarea placeholder="Plus de détaille" name="Detaille"
+								class="form-control" type="text"
+								th:value="${intervention.detaille}"></textarea>
+							<span th:errors="${intervention.detaille}" class="text-danger"></span>
+						</div>
 
 						<div class="form-group">
 							<label class="label-control">Datetime Picker</label> <input
