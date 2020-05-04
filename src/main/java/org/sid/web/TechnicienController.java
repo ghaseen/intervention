@@ -11,6 +11,10 @@ import org.sid.entities.technicien;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class TechnicienController {
 	@Autowired
@@ -76,7 +81,80 @@ public class TechnicienController {
 		}
 		
 		
+		@GetMapping("/Technicien/EditProfile")
+		public String editProfile(Model model,String flag) {
+			technicien cl =new technicien();
+
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+			  
+		      String username =  auth.getName();
+		 		    
+			 cl=TRepository.ChercherTechnicienusername(username);
+			 
+			 cl.setPassword("");
+			 model.addAttribute("technicien",cl) ;
+			 if(flag!=null && flag.compareTo("done")==0) {
+				 model.addAttribute("msg","Votre compte a été modifier");
+				 model.addAttribute("falg","done");
+			 }
+			 else if (flag!=null && flag.compareTo("error")==0)
+			 {
+				 model.addAttribute("msg","une erreur est survenu réessayez");
+				 model.addAttribute("flag","error");
+			 }
+			 return "Technicien/EditProfile";
+			
+		}
 		
+		@RequestMapping(value="/Technicien/saveProfile",method=RequestMethod.POST)
+		public String editProfile(Model model,@Valid technicien tech , BindingResult bindingResult,RedirectAttributes redirectAttrs) {
+			
+			
+		
+			redirectAttrs.addAttribute("flag", "done");
+			
+			if(bindingResult.hasErrors()) {
+				redirectAttrs.addAttribute("flag", "error");
+				return"redirect:/Technicien/EditProfile" ;
+			}
+			
+			
+			PasswordEncoder bcpe=new BCryptPasswordEncoder() ;
+				
+			tech.setActive(true);
+			tech.setRole("TECHNICIEN");
+			technicien cl=TRepository.findById(tech.getId()).get();
+			
+			if(tech.getDateN()==null)
+				tech.setDateN(cl.getDateN());
+			
+			if(tech.getAdresse()==null)
+				tech.setAdresse(cl.getAdresse());
+			if(tech.getCin()==null)
+				tech.setCin(cl.getCin());
+			if(tech.getMail()==null)
+				tech.setMail(cl.getMail());
+			if(tech.getMobile()==0)
+				tech.setMobile(cl.getMobile());
+			if(tech.getNom()==null)
+				tech.setNom(cl.getNom());
+			if(tech.getPrenom()==null)
+				tech.setPrenom(cl.getPrenom());
+			
+
+			
+			if(tech.getPassword()!=null && !tech.getPassword().isEmpty() ) {
+				tech.setPassword(bcpe.encode(tech.getPassword()));
+			}else {
+				tech.setPassword(TRepository.ChercherTechnicienusername(tech.getUsername()).getPassword());
+			}
+			TRepository.save(tech);
+			
+			
+			
+			return "redirect:/Technicien/EditProfile";
+		}
 
 		
 	}
