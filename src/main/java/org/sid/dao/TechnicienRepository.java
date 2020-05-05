@@ -1,5 +1,7 @@
 package org.sid.dao;
 
+import java.util.List;
+
 import org.sid.entities.Client;
 import org.sid.entities.technicien;
 import org.springframework.data.domain.Page;
@@ -14,5 +16,8 @@ public interface TechnicienRepository  extends JpaRepository<technicien, Long> {
 	
 	@Query("select t from technicien t where (t.username like:x)")
 	public technicien ChercherTechnicienusername(@Param("x")String username);
+	
+	@Query("select CONCAT(t.nom, ' ',t.prenom) as name , count(t.id) as y from technicien t, Intervention i where i.technicien.id=t.id GROUP BY  t.id ")
+	public List<Object> techstat();
 	
 }

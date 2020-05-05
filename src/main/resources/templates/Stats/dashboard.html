@@ -5,157 +5,181 @@ layout:decorate="layout"
 xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="utf-8">
-<title>Dashboard</title>
-<script src="https://code.highcharts.com/highcharts.js"></script>
+<title>Dashboard</title><script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
 
-<script>
-    $(document).ready(function () {
-       
+
+
+
+
+<script type="text/javascript">
+$(document).ready(
+        function() {
             $.ajax({
+
                     type: 'GET',
                    
-                    url: '@Url.Action("stats", "Admin")',
+                    url: '/api/stat',
                 success: function (result) {
-                    var univ = result[1];
-                    Highcharts.chart('container', {
-                        chart: {
-                            plotBackgroundColor: null,
-                            plotBorderWidth: null,
-                            plotShadow: false,
-                            type: 'pie'
-                        },
-                        title: {
-                            text: 'University'
-                        }, credits: {
-                            enabled: false
-                        },
-                        tooltip: {
-                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                        },
-                        plotOptions: {
-                            pie: {
-                                allowPointSelect: true,
-                                cursor: 'pointer',
-                                dataLabels: {
-                                    enabled: false
-                                },
-                                showInLegend: true
-                            }
-                        },
-                        series: [{
-                            name: 'Pourcentage',
-                            colorByPoint: true,
-                            data: univ
-                        }]
-                    });
-                    var theme = result[2];
-                    var thcat = [];
-                    var thvalues = [];
-                    for (var i = 0; i < theme.length; i++) {
-                        if (theme[i].thname) {
-                            thcat[i] = theme[i].thname;
-                        }
-                        if (theme[i].thval) {
-                            thvalues[i] = theme[i].thval;
-                        }
-                    }
-                    Highcharts.chart('container2', {
-                        chart: {
-                            type: 'bar'
-                        },
-                        title: {
-                            text: 'Theme Average Event'
-                        },
-                        subtitle: {
-                            text: ''
-                        },
-                        xAxis: {
-                            categories: thcat,
-                            crosshair: true,
-                        },
-                        yAxis: {
-                            min: 0,
-                            title: {
-                                text: 'Number of Events'
-                            }
-                        }, credits: {
-                            enabled: false
-                        },
-                        tooltip: {
-                            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                '<td style="padding:0"><b>{point.y} Event</b></td></tr>',
-                            footerFormat: '</table>',
-                            shared: true,
-                            useHTML: true
-                        },
-                        plotOptions: {
-                            column: {
-                                pointPadding: 0.2,
-                                borderWidth: 0
-                            }
-                        },
-                        series: [{
-                            name: 'Events',
-                            data: thvalues
-                        }]
-                    });
-                    var event = result[0]
-                    var mncat = [];
-                    var mnvalues = [];
-                    for (var i = 0; i < event.length; i++) {
-                        if (event[i].mon) {
-                            mncat[i] = event[i].mon;
-                        }
-                        if (event[i].monval) {
-                            mnvalues[i] = event[i].monval;
-                        }
-                    }
-                    Highcharts.chart('container1', {
-                        chart: {
-                            type: 'column'
-                        },
-                        title: {
-                            text: 'Monthly Average Event'
-                        },
-                        subtitle: {
-                            text: ''
-                        },
-                        xAxis: {
-                            categories: mncat,
-                            crosshair: true,
-                        },
-                        yAxis: {
-                            min: 0,
-                            title: {
-                                text: 'Number of Events'
-                            }
-                        },
-                        credits: {
-                            enabled: false
-                        },
-                        tooltip: {
-                            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                '<td style="padding:0"><b>{point.y} Event</b></td></tr>',
-                            footerFormat: '</table>',
-                            shared: true,
-                            useHTML: true
-                        },
-                        plotOptions: {
-                            column: {
-                                pointPadding: 0.2,
-                                borderWidth: 0
-                            }
-                        },
-                        series: [{
-                            name: 'Events',
-                            data: mnvalues
-                        }]
-                    });
+                	
+                	var techstat=result["techstat"]
+                	var prodstat=result["prodstat"]
+                	var interstat=result["interstat"]
+                	
+
+                	
+                	
+                	Highcharts.chart('container', {
+                		  chart: {
+                		    plotBackgroundColor: null,
+                		    plotBorderWidth: null,
+                		    plotShadow: false,
+                		    type: 'pie'
+                		  },
+                		  title: {
+                		    text: 'Nombre d\'intervention de chaque technicien'
+                		  },
+                		  tooltip: {
+                		    pointFormat: '{series.name}: <b>{point.percentage:.1f}%<br>{point.y:.00f}</b>'
+                		  },
+                		  accessibility: {
+                		    point: {
+                		      valueSuffix: '%'
+                		    }
+                		  },
+                		  plotOptions: {
+                		    pie: {
+                		      allowPointSelect: true,
+                		      cursor: 'pointer',
+                		      dataLabels: {
+                		        enabled: true,
+                		        format: '<b>{point.name}</b>: {point.percentage:.1f}%<br>{point.y:.0f}'
+                		      }
+                		    }
+                		  },
+                		  series: [{
+                              name: 'Pourcentage',
+                              colorByPoint: true,
+                              data: techstat
+                          
+                		  }]
+                		});
+                	 var thcat = [];
+                     var thvalues = [];
+                     for (var i = 0; i < prodstat.length; i++) {
+                         if (prodstat[i][0]) {
+                             thcat[i] = prodstat[i][0];
+                         }
+                         if (prodstat[i][1]) {
+                             thvalues[i] = prodstat[i][1];
+                         }
+                     }
+                	
+                	  Highcharts.chart('container2', {
+                          chart: {
+                              type: 'bar'
+                          },
+                          title: {
+                              text: 'Nombre de reclamation de chaque produit'
+                          },
+                          subtitle: {
+                              text: ''
+                          },
+                          xAxis: {
+                              categories: thcat,
+                              crosshair: true,
+                          },
+                          yAxis: {
+                              min: 0,
+                              title: {
+                                  text: 'Nombre des reclamations'
+                              }
+                          }, credits: {
+                              enabled: false
+                          },
+                          tooltip: {
+                              headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                              pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                  '<td style="padding:0"><b>{point.y} reclamations</b></td></tr>',
+                              footerFormat: '</table>',
+                              shared: true,
+                              useHTML: true
+                          },
+                          plotOptions: {
+                              column: {
+                                  pointPadding: 0.2,
+                                  borderWidth: 0
+                              }
+                          },
+                          series: [{
+                              name: 'Reclamations',
+                              data: thvalues
+                          }]
+                      });
+                	  
+                	  
+                	
+
+                      var mncat = [];
+                      var mnvalues = [];
+                      for (var i = 0; i < interstat.length; i++) {
+                          if (interstat[i][0]) {
+                              mncat[i] = interstat[i][0];
+                          }
+                          if (interstat[i][1]) {
+                              mnvalues[i] = interstat[i][1];
+                          }
+                      }
+                  
+                      console.log(mnvalues);
+                      console.log(mncat)
+
+                      Highcharts.chart('container1', {
+                          chart: {
+                              type: 'column'
+                          },
+                          title: {
+                              text: 'Moyenne des intervention par mois'
+                          },
+                          subtitle: {
+                              text: ''
+                          },
+                          xAxis: {
+                              categories: mncat,
+                              crosshair: true,
+                          },
+                          yAxis: {
+                              min: 0,
+                              title: {
+                                  text: 'Nombre d\'intervention'
+                              }
+                          },
+                          credits: {
+                              enabled: false
+                          },
+                          tooltip: {
+                              headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                              pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                  '<td style="padding:0"><b>{point.y} Intervention</b></td></tr>',
+                              footerFormat: '</table>',
+                              shared: true,
+                              useHTML: true
+                          },
+                          plotOptions: {
+                              column: {
+                                  pointPadding: 0.2,
+                                  borderWidth: 0
+                              }
+                          },
+                          series: [{
+                              name: 'Interventions',
+                              data: mnvalues
+                          }]
+                      });
                 }
         });
     })
@@ -171,10 +195,21 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 </head>
 
 <body> 
- <div>
-        <div id="container2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-        <div id="container1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-        <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+<div layout:fragment="content1">
+
+  <div id="container"></div>
+
+
+
+
+
+  <div id="container1"></div>
+
+
+
+
+  <div id="container2"></div>
+
 
     </div>
 </body>

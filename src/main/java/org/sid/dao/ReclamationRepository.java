@@ -1,5 +1,7 @@
 package org.sid.dao;
 
+import java.util.List;
+
 import org.sid.entities.Reclamation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,5 +15,6 @@ public interface ReclamationRepository extends JpaRepository<Reclamation, Long> 
 	
 	@Query("select r from Reclamation r where (r.client.id like:x)")
 	public Page<Reclamation> findByIDClientContains(@Param("x")Long idC, Pageable pageable);
+	
 	
 }

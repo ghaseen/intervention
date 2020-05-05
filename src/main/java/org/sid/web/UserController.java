@@ -109,7 +109,12 @@ public class UserController {
 
 		return "login" ; 
 	}
-	
+	@GetMapping("/admin/dashboard")
+	public String dashboard() {
+		
+
+		return "/Stats/dashboard" ; 
+	}
 	
 	@RequestMapping(value="/logout")
 	public String logout() {
