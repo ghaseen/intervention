@@ -16,5 +16,8 @@ public interface ReclamationRepository extends JpaRepository<Reclamation, Long> 
 	@Query("select r from Reclamation r where (r.client.id like:x)")
 	public Page<Reclamation> findByIDClientContains(@Param("x")Long idC, Pageable pageable);
 	
+	@Query("select r.idR, r.produit.designation  , r.Fixe,r.explication ,r.codeP, r.addresse from Reclamation r where (r.client.id like:x)")
+	public List<Object> clientreclam(@Param("x")Long idC);
+	
 	
 }

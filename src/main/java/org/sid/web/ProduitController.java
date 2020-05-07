@@ -60,7 +60,7 @@ Produit produit=produitRepository.findById(id).get();
 	@GetMapping("/admin/formProduit")
 	public String form (Model model) {
 		model.addAttribute("produit",new Produit()) ; 
-		//ken jit rakezt m3aya rak 3rafteha chnya mochkel ama enty lehy fi tel
+		
 		return "produit/FormProduit" ; 
 	}
 	

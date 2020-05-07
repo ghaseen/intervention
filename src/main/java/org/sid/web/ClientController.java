@@ -65,7 +65,7 @@ public class ClientController {
 			client.setRole("CLIENT");
 			
 			CRepository.save(client) ; 
-			return "redirect:/user/index" ; 
+			return "redirect:/admin/clients" ; 
 		}
 		
 		@GetMapping("/admin/edit")

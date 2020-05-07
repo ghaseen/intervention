@@ -52,7 +52,12 @@ public class InterventionController {
 		return "/Intervention/Intervention" ;
 	}
 	
-	
+	@GetMapping("/admin/mapinterventions")
+	public String getInterventionsMap(Model model)
+	{
+		
+		return "/Intervention/Map";
+	}
 	
 	
 	

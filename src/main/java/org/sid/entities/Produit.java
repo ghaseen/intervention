@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 @Entity
 public class Produit implements Serializable {
@@ -22,7 +23,7 @@ public class Produit implements Serializable {
 	@Size (min=5, max=70)
 	private String designation ;
 	
-	
+	@JsonIgnore
 	@OneToMany(mappedBy="produit")
 	private List<Reclamation> reclamations;
 	
