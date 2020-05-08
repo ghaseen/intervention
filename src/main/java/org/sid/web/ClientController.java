@@ -49,7 +49,7 @@ public class ClientController {
 		@GetMapping("/admin/delete")
 		public String delete (Long id,int page , String motCle) {
 			CRepository.deleteById(id);
-			return"redirect:/user/index?page="+page+"&motCle"+motCle;
+			return"redirect:/admin/clients?page="+page+"&motCle"+motCle;
 		}
 		
 		

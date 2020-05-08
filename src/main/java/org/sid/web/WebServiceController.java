@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -66,10 +67,10 @@ public class WebServiceController {
 			  Modelmap m=new Modelmap(l.getIdInt(),l.getLocalisation(),l.getTechnicien().getNom(),l.getTechnicien().getPrenom(),l.getDateInt().toString());
 
 
-			  String sURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+l.getLocalisation()+
-					  ".json?access_token=pk.eyJ1Ijoic2FtaWtyIiwiYSI6ImNrOHRieWk3dDBuaTQzbGxvZDh2ZGJrZjgifQ.ZXvwJ489e09-HnnWfWpWtA&limit=1";
+			  String sURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+URLEncoder.encode(l.getLocalisation(), "UTF-8").replace(" ", "%20")+
+					  ".json?proximity=36.809507,10.138392&access_token=pk.eyJ1Ijoic2FtaWtyIiwiYSI6ImNrOHRieWk3dDBuaTQzbGxvZDh2ZGJrZjgifQ.ZXvwJ489e09-HnnWfWpWtA&limit=1";
 	          String json = readUrl(sURL);
-	          JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
+	          JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject(); 
 	          JsonArray arr = jsonObject.getAsJsonArray("features");
 	          JsonArray center = arr.get(0).getAsJsonObject().get("center").getAsJsonArray();
 	          double lat=center.get(0).getAsDouble();
