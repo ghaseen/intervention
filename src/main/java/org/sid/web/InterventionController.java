@@ -129,7 +129,7 @@ public class InterventionController {
 
 		sendmail(intervention,intervention.getReclamation());
 
-		return "/admin/intervention"; 
+		return "redirect:/admin/intervention"; 
 	}
 	
 	
