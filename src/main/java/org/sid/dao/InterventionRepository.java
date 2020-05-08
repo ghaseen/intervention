@@ -20,8 +20,14 @@ public interface InterventionRepository extends JpaRepository<Intervention, Long
 	@Query("select i from Intervention i where (i.technicien.id like:x)")
 	public Page<Intervention> findByIDtechnicienContains(@Param("x")Long idT, Pageable pageable);
 	
-	@Query("select i.id as id,  i.localisation as address , i.technicien.nom as nom, i.technicien.prenom as prenom, i.dateInt as date from Intervention i where (i.dateInt>=:x)")
-	public List<Object> findlocations(@Param("x")Date date);
+	
+	
+	@Query("select i    from Intervention i where (i.dateInt>=:x)")
+	public List<Intervention> findlocations(@Param("x")Date date);
+	
+	
+	
+	
 	
 	@Query("SELECT    monthname(i.dateInt)  as name, "
 			+ "COUNT(idInt) as y \n" + 

@@ -1,10 +1,17 @@
 package org.sid.web;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +21,8 @@ import org.sid.dao.ProduitRepository;
 import org.sid.dao.ReclamationRepository;
 import org.sid.dao.TechnicienRepository;
 import org.sid.entities.Client;
+import org.sid.entities.Intervention;
+import org.sid.entities.Modelmap;
 import org.sid.entities.Produit;
 import org.sid.entities.Reclamation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +34,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 @RestController
 @RequestMapping("/api")
@@ -40,21 +53,56 @@ public class WebServiceController {
 	@Autowired
 	private ClientRepository CRepo;
 	
-	@GetMapping("/localisation")
-	public List<Object> localisation() {
-
-
+	
+	
+	@GetMapping("/apiMap")
+	public List<Modelmap> apiMap() throws Exception {
 		LocalDateTime localDateTime = LocalDateTime.now();
 		LocalDate localDate = localDateTime.toLocalDate();
+		  List<Intervention> ls= IRepository.findlocations(java.sql.Date.valueOf(localDate));
+		  List<Modelmap> lsmap=new ArrayList<>();
+		  for(Intervention l:ls)
+			{
+			  Modelmap m=new Modelmap(l.getIdInt(),l.getLocalisation(),l.getTechnicien().getNom(),l.getTechnicien().getPrenom(),l.getDateInt().toString());
 
-		
-		
-		return IRepository.findlocations(java.sql.Date.valueOf(localDate));
-				
-		
-		
+
+			  String sURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/"+l.getLocalisation()+
+					  ".json?access_token=pk.eyJ1Ijoic2FtaWtyIiwiYSI6ImNrOHRieWk3dDBuaTQzbGxvZDh2ZGJrZjgifQ.ZXvwJ489e09-HnnWfWpWtA&limit=1";
+	          String json = readUrl(sURL);
+	          JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
+	          JsonArray arr = jsonObject.getAsJsonArray("features");
+	          JsonArray center = arr.get(0).getAsJsonObject().get("center").getAsJsonArray();
+	          double lat=center.get(0).getAsDouble();
+	          double lan=center.get(1).getAsDouble();
+	          System.out.println(lat+" "+lan);
+	          m.setLat(lat+"");
+	          m.setLon(lan+"");
+	          lsmap.add(m);
+			} 
+return lsmap;
 	}
 	
+
+
+	
+	private static String readUrl(String urlString) throws Exception {
+        BufferedReader reader = null;
+        try {
+            URL url = new URL(urlString);
+            reader = new BufferedReader(new InputStreamReader(url.openStream()));
+            StringBuffer buffer = new StringBuffer();
+            int read;
+            char[] chars = new char[1024];
+            while ((read = reader.read(chars)) != -1)
+                buffer.append(chars, 0, read);
+
+            return buffer.toString();
+        } finally {
+            if (reader != null)
+                reader.close();
+        }
+    }
+
 	@GetMapping("/techstat")
 	public List<Object> prod() {
 

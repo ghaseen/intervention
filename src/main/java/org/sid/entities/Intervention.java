@@ -17,6 +17,8 @@ import javax.persistence.TemporalType;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @SpringBootApplication
 @Entity
 public class Intervention  implements Serializable{
@@ -28,10 +30,12 @@ public class Intervention  implements Serializable{
 	private Date dateInt ;
 	private String localisation ; 
 	private String detaille;
+	
 	@ManyToOne
 	@JoinColumn(name="tech_id")
 	private technicien technicien  ;
 	
+	@JsonIgnore
 	@OneToOne(fetch = FetchType.EAGER)
 	 @JoinColumn(name = "reclamation_id", referencedColumnName = "idR")
 	private Reclamation reclamation;

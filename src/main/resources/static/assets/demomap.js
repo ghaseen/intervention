@@ -67,7 +67,7 @@ function addInfoBubble(map) {
     ui.addBubble(bubble);
   }, false);
 
-  $.get("/api/localisation", function (data, status) {
+ /* $.get("/api/localisation", function (data, status) {
     console.log(data);
     for (var i = 0; i < data.length; i++) {
 
@@ -75,5 +75,5 @@ function addInfoBubble(map) {
           + data[i].adresse +'</p><br><p>Heure :'+'</p>'+data[i].heure);
     }
   });
-
+*/
 }
