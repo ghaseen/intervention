@@ -27,6 +27,7 @@ import org.sid.entities.Modelmap;
 import org.sid.entities.Produit;
 import org.sid.entities.Reclamation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -171,10 +173,13 @@ return lsmap;
 	}
 	//Fixe=147852&addresse=tunis&codeP=1478&typeR=type&explication=sometest
 	@RequestMapping("/ajoutreclam")
-	public void ajoutreclam(@RequestBody Reclamation reclam,
-			HttpServletRequest request) {
-		String idp= request.getParameter("idp");
-		String idc= request.getParameter("idc");
+	public void ajoutreclam(@RequestBody ObjectNode json) {
+		String idp= json.get("idp").asText();
+		String idc= json.get("idc").asText();
+		Reclamation reclam=new Reclamation(json.get("Fixe").asText() , json.get("addresse").asText(),
+				 json.get("codeP").asInt() , json.get("typeR").asText() ,
+				 json.get("explication").asText() );
+		
 		Produit p=PRepository.findById(Long.parseLong(idp)).get();
 		Client c=CRepo.findById(Long.parseLong(idc)).get();
 		reclam.setClient(c);
@@ -225,5 +230,29 @@ return lsmap;
 		
 		
 	}
+	
+	@RequestMapping("/login")
+	public String LoginApi(HttpServletRequest request) {
+		String username=request.getParameter("username");
+		String password=request.getParameter("password");
+		
+		Client c=CRepo.ChercherClientusername(username);
+		if(c!=null) {
+	    	PasswordEncoder bcpe=new BCryptPasswordEncoder() ;
+
+			String encpass=bcpe.encode(password);
+			if(bcpe.matches(password, encpass)) {
+				return "{idc:"+c.getId()+",username:"+username+",nomC:"+c.getNom()+",PrenomC:"+c.getPrenom()+"}";
+			}else {
+				return "Error";
+			}
+			
+		}else {
+			return "Error";
+		}
+		
+		 
+	}
+	 
 	
 }

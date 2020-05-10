@@ -56,6 +56,16 @@ public class Reclamation implements Serializable {
 		this.explication = explication;
 		this.client = client;
 	}
+	public Reclamation( String fixe, String addresse, int codeP, String typeR,
+			String explication ) {
+		super();
+		
+		this.Fixe = fixe;
+		this.addresse = addresse;
+		this.codeP = codeP;
+		this.typeR = typeR;
+		this.explication = explication; 
+	}
 
 	public Reclamation() {
 		super();
