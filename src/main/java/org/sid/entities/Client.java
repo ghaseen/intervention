@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -28,19 +30,25 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Client extends users implements Serializable {
 
 	private String sexe  ;
+	@NotNull
 	private String nom ; 
+	@NotNull
 	private String prenom ;
 	private Long cin ;
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name="date_naissance")
 	private Date dateN ;
-	private String adresse ; 
+	@NotNull
+	@Size (min=5, max=70)
+	private String adresse ;
+	@NotNull
+	@Size ( max=8)
 	private int mobile ; 
 	private String mail ;
 	
 	
-	@OneToMany(mappedBy="client" , fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="client" , fetch=FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<Reclamation> rec; 
 
 	

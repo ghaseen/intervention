@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
@@ -20,12 +21,19 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @Table(name="techniciens")
 @DiscriminatorValue("T")
 public class technicien extends users implements Serializable {
-	
+	@NotNull
 	private String nom ;
+	@NotNull
 	private String prenom ;
+	@NotNull
+	@Size (max=8)
 	private Long cin ;
 	private Date dateN ; 
-	private String spec ; 
+	@NotNull
+	@Size (min=5, max=70)
+	private String spec ;
+	@NotNull
+	@Size (min=5, max=70)
 	private String adresse ;
 	private int mobile ; 
 	private String mail ; 
