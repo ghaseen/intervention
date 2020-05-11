@@ -15,6 +15,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.sid.dao.ClientRepository;
 import org.sid.dao.InterventionRepository;
@@ -27,15 +28,20 @@ import org.sid.entities.Modelmap;
 import org.sid.entities.Produit;
 import org.sid.entities.Reclamation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -171,10 +177,13 @@ return lsmap;
 	}
 	//Fixe=147852&addresse=tunis&codeP=1478&typeR=type&explication=sometest
 	@RequestMapping("/ajoutreclam")
-	public void ajoutreclam(@RequestBody Reclamation reclam,
-			HttpServletRequest request) {
-		String idp= request.getParameter("idp");
-		String idc= request.getParameter("idc");
+	public void ajoutreclam(@RequestBody ObjectNode json) {
+		String idp= json.get("idp").asText();
+		String idc= json.get("idc").asText();
+		Reclamation reclam=new Reclamation(json.get("Fixe").asText() , json.get("addresse").asText(),
+				 json.get("codeP").asInt() , json.get("typeR").asText() ,
+				 json.get("explication").asText() );
+		
 		Produit p=PRepository.findById(Long.parseLong(idp)).get();
 		Client c=CRepo.findById(Long.parseLong(idc)).get();
 		reclam.setClient(c);
@@ -225,5 +234,69 @@ return lsmap;
 		
 		
 	}
+	
+	@RequestMapping("/login")
+	public String LoginApi(HttpServletRequest request) {
+		String username=request.getParameter("username");
+		String password=request.getParameter("password");
+		
+		Client c=CRepo.ChercherClientusername(username);
+		if(c!=null) {
+	    	PasswordEncoder bcpe=new BCryptPasswordEncoder() ;
+
+			String encpass=bcpe.encode(password);
+			if(bcpe.matches(password, encpass)) {
+				return "{idc:"+c.getId()+",username:"+username+",nomC:"+c.getNom()+",PrenomC:"+c.getPrenom()+"}";
+			}else {
+				return "Error";
+			}
+			
+		}else {
+			return "Error";
+		}
+		
+		 
+	}
+	 
+	
+	@RequestMapping("/deleterec")
+	public String DeleteReclam(HttpServletRequest request) {
+		String idrec=request.getParameter("idrec");
+		
+
+		RRepo.deleteById(Long.parseLong(idrec));
+		return "done";
+	}
+	
+	@PostMapping("/editreclam")
+	public String editreclam(HttpServletRequest request) {
+		Client c=new Client();
+		Reclamation reclamation=new Reclamation(Long.parseLong(request.getParameter("idr")), request.getParameter("fixe"),
+				request.getParameter("addresse"), Integer.parseInt(request.getParameter("codeP")), request.getParameter("typeR"),
+				request.getParameter("explication"), c);
+		
+
+		Reclamation rec=RRepo.findById(reclamation.getIdR()).get();
+		
+		if(reclamation.getAddresse()==null || reclamation.getAddresse().isEmpty()) 
+			reclamation.setAddresse(rec.getAddresse());
+		if(reclamation.getFixe()==null || reclamation.getFixe().isEmpty()) 
+			reclamation.setFixe(rec.getFixe());
+		if(reclamation.getExplication()==null || reclamation.getExplication().isEmpty()) 
+			reclamation.setExplication(rec.getExplication());
+		if(reclamation.getTypeR()==null || reclamation.getTypeR().isEmpty()) 
+			reclamation.setTypeR(rec.getTypeR());
+		if(reclamation.getCodeP()==0  ) 
+			reclamation.setCodeP(rec.getCodeP());
+		if(reclamation.getClient()==null)
+			reclamation.setClient(CRepo.findById(Long.parseLong(request.getParameter("idc"))).get());
+		
+			
+			
+		RRepo.save(reclamation);
+		
+		return"done";
+	}
+	 
 	
 }
