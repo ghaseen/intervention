@@ -1,6 +1,9 @@
 package org.sid.web;
 
 import java.io.BufferedReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -71,8 +74,8 @@ public class WebServiceController {
 	
 	@GetMapping("/editProfil")
 	@CrossOrigin(origins = {"http://localhost:8100","http://localhost:9090"})
-	public String editPro (HttpServletRequest request) {
-		
+	public String editPro (HttpServletRequest request) throws NumberFormatException, ParseException {
+		 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Client c=CRepo.findById(Long.parseLong(request.getParameter("idc"))).get();
 		Client cl= new Client (
 				
@@ -82,7 +85,7 @@ public class WebServiceController {
 				request.getParameter("sexe") ,  request.getParameter("nom") , 
 				request.getParameter("prenom"), 
 				Integer.parseInt(request.getParameter("idc")), 
-				new Date(request.getParameter("dateN")) , 
+				formatter.parse(request.getParameter("dateN")) , 
 				request.getParameter("adresse"), Integer.parseInt(request.getParameter("mobile")),
 				request.getParameter("mail"),
 				request.getParameter("password"),request.getParameter("username")
