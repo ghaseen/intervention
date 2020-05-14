@@ -13,6 +13,9 @@ import javax.persistence.Table;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @SpringBootApplication
 @Entity
 @Table(name = "Reclamation")
@@ -29,6 +32,7 @@ public class Reclamation implements Serializable {
 	private String explication;
 	@ManyToOne
 	@JoinColumn(name = "client_id")
+	@JsonIgnore
 	private Client client;
 	
 	@ManyToOne
@@ -48,7 +52,7 @@ public class Reclamation implements Serializable {
 	public Reclamation(Long idR, String fixe, String addresse, int codeP, String typeR,
 			String explication, Client client) {
 		super();
-		
+		this.idR=idR;
 		this.Fixe = fixe;
 		this.addresse = addresse;
 		this.codeP = codeP;

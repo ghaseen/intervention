@@ -21,6 +21,8 @@ import javax.validation.constraints.NotNull;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @SpringBootApplication
 @Entity
 @Table(name="Client")
@@ -41,6 +43,7 @@ public class Client extends users implements Serializable {
 	
 	
 	@OneToMany(mappedBy="client" , fetch=FetchType.EAGER)
+	@JsonIgnore
 	private List<Reclamation> rec; 
 
 	
