@@ -76,8 +76,14 @@ public class WebServiceController {
 	@CrossOrigin(origins = {"http://localhost:8100","http://localhost:9090"})
 	public String editPro (HttpServletRequest request) throws NumberFormatException, ParseException {
 		 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		Client c=CRepo.findById(Long.parseLong(request.getParameter("idc"))).get();
-		Client cl= new Client (
+	
+		 
+		 
+		 Client cl=CRepo.findById(Long.parseLong(request.getParameter("idc"))).get();
+		
+		PasswordEncoder bcpe=new BCryptPasswordEncoder();
+		
+		Client client= new Client (
 				
 				
 				
@@ -90,38 +96,36 @@ public class WebServiceController {
 				request.getParameter("mail"),
 				request.getParameter("password"),request.getParameter("username")
 				); 
+		
+		
 			
-		if (c.getSexe()==null || c.getSexe().isEmpty()) {
-		c.setSexe(cl.getSexe());
-	} 
-		if (c.getSexe()==null || c.getSexe().isEmpty()) {
-			c.setSexe(cl.getSexe());
-		} 
-		if (c.getNom()==null || c.getNom().isEmpty()) {
-			c.setNom(cl.getNom());
-		} 
-		if (c.getPrenom()==null || c.getPrenom().isEmpty()) {
-			c.setPrenom(cl.getPrenom());
-		} 
-		if (c.getId()==null ) {
-			c.setId(cl.getId());
-		} 
-		if (c.getDateN()==null) {
-			c.setDateN(cl.getDateN());
-		} 
-		if (c.getAdresse()==null || c.getAdresse().isEmpty()) {
-			c.setAdresse(cl.getAdresse());
-		} 
-		if (c.getMobile()==0 ) {
-			c.setMobile(cl.getMobile());
-		} 
-		if (c.getPassword()==null || c.getPassword().isEmpty()) {
-			c.setSexe(cl.getSexe());
-		} 
-		if (c.getUsername()==null || c.getUsername().isEmpty()) {
-			c.setUsername(cl.getUsername());
-		} 
-		CRepo.save(c) ;
+		if(client.getDateN()!=null)
+			cl.setDateN(client.getDateN());
+			
+			if(client.getAdresse()!=null && !client.getAdresse().isEmpty())
+				cl.setAdresse(client.getAdresse());
+			
+			if(client.getCin()!=null  && !(client.getCin()!=0))
+				cl.setCin(client.getCin() );
+			
+			if(client.getMail()!=null  && !client.getMail().isEmpty())
+				cl.setMail(client.getMail());
+			
+			if(client.getMobile()==0)
+				cl.setMobile(client.getMobile());
+			
+			if(client.getNom()!=null && !client.getNom().isEmpty())
+				cl.setNom(client.getNom());
+			
+			if(client.getPrenom()!=null && !client.getPrenom().isEmpty())
+				cl.setPrenom(client.getPrenom());
+			
+
+			
+			if(client.getPassword()!=null && !client.getPassword().isEmpty() ) {
+				cl.setPassword(bcpe.encode(client.getPassword()));
+			}
+		CRepo.save(cl) ;
 		return "done";
 		
 	}
