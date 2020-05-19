@@ -1,6 +1,9 @@
 package org.sid.web;
 
 import java.io.BufferedReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -8,6 +11,7 @@ import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,11 +38,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -60,7 +67,106 @@ public class WebServiceController {
 	@Autowired
 	private ClientRepository CRepo;
 	
+
 	
+	
+	
+	
+	@GetMapping("/editProfil")
+	@CrossOrigin(origins = {"http://localhost:8100","http://localhost:9090"})
+	public String editPro (HttpServletRequest request) throws NumberFormatException, ParseException {
+		 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	
+		 
+		 
+		 Client cl=CRepo.findById(Long.parseLong(request.getParameter("idc"))).get();
+		
+		PasswordEncoder bcpe=new BCryptPasswordEncoder();
+		
+		Client client= new Client (
+				
+				
+				
+				
+				request.getParameter("sexe") ,  request.getParameter("nom") , 
+				request.getParameter("prenom"), 
+				Integer.parseInt(request.getParameter("idc")), 
+				formatter.parse(request.getParameter("dateN")) , 
+				request.getParameter("adresse"), Integer.parseInt(request.getParameter("mobile")),
+				request.getParameter("mail"),
+				request.getParameter("password"),request.getParameter("username")
+				); 
+		
+		
+			
+		if(client.getDateN()!=null)
+			cl.setDateN(client.getDateN());
+			
+			if(client.getAdresse()!=null && !client.getAdresse().isEmpty())
+				cl.setAdresse(client.getAdresse());
+			
+			if(client.getCin()!=null  && !(client.getCin()!=0))
+				cl.setCin(client.getCin() );
+			
+			if(client.getMail()!=null  && !client.getMail().isEmpty())
+				cl.setMail(client.getMail());
+			
+			if(client.getMobile()==0)
+				cl.setMobile(client.getMobile());
+			
+			if(client.getNom()!=null && !client.getNom().isEmpty())
+				cl.setNom(client.getNom());
+			
+			if(client.getPrenom()!=null && !client.getPrenom().isEmpty())
+				cl.setPrenom(client.getPrenom());
+			
+
+			
+			if(client.getPassword()!=null && !client.getPassword().isEmpty() ) {
+				cl.setPassword(bcpe.encode(client.getPassword()));
+			}
+		CRepo.save(cl) ;
+		return "done";
+		
+	}
+	
+	@GetMapping("/editrec")
+	@CrossOrigin(origins = {"http://localhost:8100","http://localhost:9090"})
+	public String editrec(HttpServletRequest request) {
+		Client c=CRepo.findById(Long.parseLong(request.getParameter("idc"))).get();
+		System.out.println("idddddddddddddddddd"+request.getParameter("idr"));
+		Reclamation reclamation=new Reclamation
+				(Long.parseLong(request.getParameter("idr")), 
+				request.getParameter("Fixe"),
+				request.getParameter("addresse"), 
+				Integer.parseInt(request.getParameter("codeP")), 
+				request.getParameter("typeR"),
+				request.getParameter("explication"), c);
+		
+
+		Reclamation rec=RRepo.findById(reclamation.getIdR()).get();
+		
+		if(reclamation.getAddresse()==null || reclamation.getAddresse().isEmpty()) 
+			reclamation.setAddresse(rec.getAddresse());
+		if(reclamation.getFixe()==null || reclamation.getFixe().isEmpty()) 
+			reclamation.setFixe(rec.getFixe());
+		if(reclamation.getExplication()==null || reclamation.getExplication().isEmpty()) 
+			reclamation.setExplication(rec.getExplication());
+		if(reclamation.getTypeR()==null || reclamation.getTypeR().isEmpty()) 
+			reclamation.setTypeR(rec.getTypeR());
+		if(reclamation.getCodeP()==0  ) 
+			reclamation.setCodeP(rec.getCodeP());
+	 
+		if(reclamation.getProduit()==null)
+			reclamation.setProduit(PRepository.findById(Long.parseLong(request.getParameter("idp"))).get());
+		
+		
+			
+			
+		RRepo.save(reclamation);
+		return "done";
+		 
+	}
 	
 	@GetMapping("/apiMap")
 	public List<Modelmap> apiMap() throws Exception {
@@ -153,7 +259,10 @@ return lsmap;
 		
 	}
 	
+	//ionic
+	
 	@RequestMapping("/listreclam")
+	@CrossOrigin(origins = {"http://localhost:8100","http://localhost:9090"})
 	public List<Object> listreclam(@RequestParam("idc") Long idc) {
 
 		//list des reclamations pour un client donne id en param
@@ -165,6 +274,7 @@ return lsmap;
 	}
 	
 	@RequestMapping("/listprod")
+	@CrossOrigin(origins = {"http://localhost:8100","http://localhost:9090"})
 	public List<Produit> listprod() {
 
 		//liste produit 
@@ -175,30 +285,58 @@ return lsmap;
 		
 		
 	}
+	
+	@RequestMapping("/allreclam")
+	public List<Reclamation> getAll()
+	{
+		List<Reclamation> recs = RRepo.findAll();
+		return recs;
+	}
+	
+	@RequestMapping("/getreclamtionid")
+	@CrossOrigin(origins = {"http://localhost:8100","http://localhost:9090"})
+	public Reclamation getReclamtionId(HttpServletRequest  request)
+	{
+		String idr= request.getParameter("idr"); 
+		Reclamation rec = RRepo.findById(Long.parseLong(idr)).get();
+		return rec;
+	}
+	
+	
 	//Fixe=147852&addresse=tunis&codeP=1478&typeR=type&explication=sometest
 	@RequestMapping("/ajoutreclam")
-	public void ajoutreclam(@RequestBody ObjectNode json) {
-		String idp= json.get("idp").asText();
-		String idc= json.get("idc").asText();
-		Reclamation reclam=new Reclamation(json.get("Fixe").asText() , json.get("addresse").asText(),
-				 json.get("codeP").asInt() , json.get("typeR").asText() ,
-				 json.get("explication").asText() );
-		
-		Produit p=PRepository.findById(Long.parseLong(idp)).get();
-		Client c=CRepo.findById(Long.parseLong(idc)).get();
-		reclam.setClient(c);
-		reclam.setProduit(p);
+	@CrossOrigin(origins = {"http://localhost:8100","http://localhost:9090"})
+    public String ajoutreclam(HttpServletRequest  request) {
+        String idp= request.getParameter("idp");
+        String idc= request.getParameter("idc");
+        Reclamation reclam=new Reclamation(request.getParameter("Fixe") , request.getParameter("addresse"),
+                Integer.parseInt(request.getParameter("codeP")) , request.getParameter("typeR") ,
+                request.getParameter("explication") );
+
+        Produit p=PRepository.findById(Long.parseLong(idp)).get();
+        Client c=CRepo.findById(Long.parseLong(idc)).get();
+        reclam.setClient(c);
+        reclam.setProduit(p);
 
 
-	 RRepo.save(reclam) ;
+        RRepo.save(reclam) ;
+        
+        return "done";
+
+
+
+    }
 				
 		
 		
-	}
+	
 	
 	@RequestMapping("/updateprofile")
 	public void updateprofile(@RequestBody Client client) {
 
+//ken ma5dmtch men loul nrml badelha kima lokhrin bfazet httpservletrequest 
+		// behi ama lezm ta3ml creation te3 client Client client=new Client(request.getparametre("idc")..... 
+		// behi
 
 		PasswordEncoder bcpe=new BCryptPasswordEncoder() ;
 		
@@ -236,6 +374,7 @@ return lsmap;
 	}
 	
 	@RequestMapping("/login")
+	@CrossOrigin(origins = {"http://localhost:8100","http://localhost:9090"})
 	public String LoginApi(HttpServletRequest request) {
 		String username=request.getParameter("username");
 		String password=request.getParameter("password");
@@ -243,16 +382,15 @@ return lsmap;
 		Client c=CRepo.ChercherClientusername(username);
 		if(c!=null) {
 	    	PasswordEncoder bcpe=new BCryptPasswordEncoder() ;
-
-			String encpass=bcpe.encode(password);
-			if(bcpe.matches(password, encpass)) {
-				return "{idc:"+c.getId()+",username:"+username+",nomC:"+c.getNom()+",PrenomC:"+c.getPrenom()+"}";
+ 
+			if(bcpe.matches(password, c.getPassword())) {
+				return "shih";
 			}else {
-				return "Error";
+				return "ghalt";
 			}
 			
 		}else {
-			return "Error";
+			return "moch mawjoud";
 		}
 		
 		 
@@ -260,6 +398,7 @@ return lsmap;
 	 
 	
 	@RequestMapping("/deleterec")
+	@CrossOrigin(origins = {"http://localhost:8100","http://localhost:9090"})
 	public String DeleteReclam(HttpServletRequest request) {
 		String idrec=request.getParameter("idrec");
 		
@@ -267,36 +406,8 @@ return lsmap;
 		RRepo.deleteById(Long.parseLong(idrec));
 		return "done";
 	}
+ 
 	
-	@PostMapping("/editreclam")
-	public String editreclam(HttpServletRequest request) {
-		Client c=new Client();
-		Reclamation reclamation=new Reclamation(Long.parseLong(request.getParameter("idr")), request.getParameter("fixe"),
-				request.getParameter("addresse"), Integer.parseInt(request.getParameter("codeP")), request.getParameter("typeR"),
-				request.getParameter("explication"), c);
-		
-
-		Reclamation rec=RRepo.findById(reclamation.getIdR()).get();
-		
-		if(reclamation.getAddresse()==null || reclamation.getAddresse().isEmpty()) 
-			reclamation.setAddresse(rec.getAddresse());
-		if(reclamation.getFixe()==null || reclamation.getFixe().isEmpty()) 
-			reclamation.setFixe(rec.getFixe());
-		if(reclamation.getExplication()==null || reclamation.getExplication().isEmpty()) 
-			reclamation.setExplication(rec.getExplication());
-		if(reclamation.getTypeR()==null || reclamation.getTypeR().isEmpty()) 
-			reclamation.setTypeR(rec.getTypeR());
-		if(reclamation.getCodeP()==0  ) 
-			reclamation.setCodeP(rec.getCodeP());
-		if(reclamation.getClient()==null)
-			reclamation.setClient(CRepo.findById(Long.parseLong(request.getParameter("idc"))).get());
-		
-			
-			
-		RRepo.save(reclamation);
-		
-		return"done";
-	}
 	 
 	
 }
