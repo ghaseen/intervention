@@ -375,23 +375,22 @@ return lsmap;
 	
 	@RequestMapping("/login")
 	@CrossOrigin(origins = {"http://localhost:8100","http://localhost:9090"})
-	public Client LoginApi(HttpServletRequest request) {
+	public String LoginApi(HttpServletRequest request) {
 		String username=request.getParameter("username");
 		String password=request.getParameter("password");
 		
 		Client c=CRepo.ChercherClientusername(username);
 		if(c!=null) {
 	    	PasswordEncoder bcpe=new BCryptPasswordEncoder() ;
-
-			String encpass=bcpe.encode(password);
-			if(bcpe.matches(password, encpass)) {
-				return c;
+ 
+			if(bcpe.matches(password, c.getPassword())) {
+				return "shih";
 			}else {
-				return null;
+				return "ghalt";
 			}
 			
 		}else {
-			return null;
+			return "moch mawjoud";
 		}
 		
 		 
