@@ -95,7 +95,12 @@ public class InterventionController {
 		Reclamation rec=RRepository.findById((long)id).get();
 		intervention.setLocalisation(rec.getAddresse() );
 		intervention.setReclamation(rec);
-		if(bindingResult.hasErrors()|| intervention==null) return"/Intervention/FormIntervention" ;
+		if(bindingResult.hasErrors()|| intervention==null) {
+			model.addAttribute("intervention",intervention);
+			
+			return"/Intervention/FormIntervention" ;
+		}
+			
 		
 		IRepository.save(intervention) ;
 		

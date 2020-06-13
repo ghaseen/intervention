@@ -237,8 +237,9 @@ public class UserController {
 		redirectAttrs.addAttribute("flag", "done");
 		
 		if(bindingResult.hasErrors()) {
-			redirectAttrs.addAttribute("flag", "error");
-			return"redirect:/Admin/EditProfile" ;
+			model.addAttribute("admin",admin);
+			model.addAttribute("flag", "error");
+			return"/User/Editprofilead" ;
 		}
 		
 		

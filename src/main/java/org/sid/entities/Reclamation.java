@@ -10,6 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -24,11 +28,17 @@ public class Reclamation implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idR;
+	@NotBlank(message = "Ne doit pas etre vide")
 	
 	private String Fixe;//chnya hetha
+	@NotBlank(message="Ne doit pas etre vide")
+	@Size (min=5, max=70,message="taille incorrect doit etre supérieur à 5")
 	private String addresse;
+	@Min(value = 0, message = "le valeur doit etre positive")
 	private int codeP;
+	@NotBlank(message="Ne doit pas etre vide")
 	private String typeR;
+	@NotBlank(message="Ne doit pas etre vide")
 	private String explication;
 	@ManyToOne
 	@JoinColumn(name = "client_id")
@@ -37,6 +47,7 @@ public class Reclamation implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "produit_id",referencedColumnName = "id")
+	@NotNull(message="veuillez selectionner un produit")
 	private Produit produit;
 
 	

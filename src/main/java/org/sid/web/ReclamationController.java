@@ -93,7 +93,11 @@ public class ReclamationController {
 	
 	@PostMapping("/client/saver")
 	public String save1 (Model model , @Valid Reclamation reclamation , BindingResult bindingResult) {
-		if(bindingResult.hasErrors()) return"FormReclamation" ;
+		if(bindingResult.hasErrors()) {
+			model.addAttribute("prods",PRepository.findAll()) ; 
+			model.addAttribute("reclamation",reclamation);
+			return"/Reclamation/FormReclamation" ;
+		}
 		
 		    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		   
@@ -142,7 +146,10 @@ Reclamation reclamation=RRepository.findById(id).get();
 	
 	@PostMapping("/client/savereclam")
 	public String editreclam(Model model,@Valid Reclamation reclamation ,BindingResult bindingResult,Long idc) {
-		if(bindingResult.hasErrors())return "redirect:/client/editr";
+		if(bindingResult.hasErrors()) {
+			model.addAttribute("reclamation",reclamation);
+			return "/Reclamation/EditReclamation";
+		}
 		Reclamation rec=RRepository.findById(reclamation.getIdR()).get();
 		
 		if(reclamation.getAddresse()==null || reclamation.getAddresse().isEmpty()) 

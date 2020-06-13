@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -21,7 +22,7 @@ public class Produit implements Serializable {
 	
 	@Id @GeneratedValue (strategy=GenerationType.IDENTITY)
 	private long id;
-	@NotNull
+	@NotBlank(message="Ne doit pas etre vide")
 	@Size (min=5, max=70)
 	private String designation ;
 	

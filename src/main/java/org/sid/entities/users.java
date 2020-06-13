@@ -10,7 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -21,7 +24,12 @@ public class users implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY) 
 	private Long  id ;
+@NotBlank(message = "Ne doit pas etre vide")
+@Pattern(regexp = "([a-zA-Z0-9]*$)")
 private String username ;
+@NotBlank(message = "Ne doit pas etre vide")
+@Pattern(regexp = "([a-zA-Z0-9]*$)")
+@Length(min = 8,message="taille incorrect doit etre supérieur à 8")
 private String password ;
 private boolean active ;
 private String role;

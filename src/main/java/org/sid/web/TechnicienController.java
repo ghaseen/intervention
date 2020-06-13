@@ -53,8 +53,10 @@ public class TechnicienController {
 		
 		@RequestMapping(value="/admin/SaveT",method = RequestMethod.POST)
 		public String save (Model model ,@Valid @ModelAttribute("technicien") technicien technicien , BindingResult bindingResult) {
-			if(bindingResult.hasErrors()) {
-				model.addAttribute("technicien",new technicien()) ;
+			if(bindingResult.hasErrors()||!TRepository.test(technicien.getCin(), technicien.getMobile(),technicien.getUsername()).isEmpty()) {
+				model.addAttribute("error","erreur est survenu réessayez");
+
+				model.addAttribute("technicien",technicien) ;
 				return "/technicien/FormTechnicien" ; 
 			}
 			technicien.setActive(true);
@@ -90,7 +92,7 @@ public class TechnicienController {
 				tech.setCin(cl.getCin());
 			if(tech.getMail()==null)
 				tech.setMail(cl.getMail());
-			if(tech.getMobile()==0)
+			if(tech.getMobile().isEmpty())
 				tech.setMobile(cl.getMobile());
 			if(tech.getNom()==null)
 				tech.setNom(cl.getNom());
@@ -169,8 +171,9 @@ public class TechnicienController {
 			redirectAttrs.addAttribute("flag", "done");
 			
 			if(bindingResult.hasErrors()) {
-				redirectAttrs.addAttribute("flag", "error");
-				return"redirect:/Technicien/EditProfile" ;
+				model.addAttribute("tech",tech);
+				model.addAttribute("msg","une erreur est survenu réessayez");
+				return"Technicien/EditProfile" ;
 			}
 			
 			
@@ -185,11 +188,11 @@ public class TechnicienController {
 			
 			if(tech.getAdresse()==null)
 				tech.setAdresse(cl.getAdresse());
-			if(tech.getCin()==null)
+			if(tech.getCin()==null||tech.getCin().isEmpty())
 				tech.setCin(cl.getCin());
 			if(tech.getMail()==null)
 				tech.setMail(cl.getMail());
-			if(tech.getMobile()==0)
+			if(tech.getMobile().isEmpty())
 				tech.setMobile(cl.getMobile());
 			if(tech.getNom()==null)
 				tech.setNom(cl.getNom());

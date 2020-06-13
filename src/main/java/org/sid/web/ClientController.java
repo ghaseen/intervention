@@ -59,7 +59,7 @@ public class ClientController {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			//client.setDateN(sdf..format(client.getDateN()));
 			System.out.println(client.getDateN());
-			if(bindingResult.hasErrors() ||!CRepository.test(client.getCin(), client.getMobile()).isEmpty() ) {
+			if(bindingResult.hasErrors() ||!CRepository.test(client.getCin(), client.getMobile(),client.getUsername()).isEmpty() ) {
 				model.addAttribute("client", client);
 				model.addAttribute("error","erreur est survenu réessayez");
 				return"/Client/FormClient" ;
@@ -83,8 +83,9 @@ public class ClientController {
 		@RequestMapping(value="/admin/editclient",method = RequestMethod.POST)
 		public String saveedit (Model model , @Valid @ModelAttribute("client")  Client client , BindingResult bindingResult) {
 			
-			if(bindingResult.hasErrors()) {
+			if(bindingResult.hasErrors() ||!CRepository.test(client.getCin(), client.getMobile(),client.getUsername()).isEmpty()) {
 				model.addAttribute("client", client);
+				model.addAttribute("error","erreur est survenu réessayez");
 				return"/Client/FormClient" ;
 			}
 			PasswordEncoder bcpe=new BCryptPasswordEncoder() ;
@@ -197,7 +198,7 @@ public class ClientController {
 		
 			redirectAttrs.addAttribute("flag", "done");
 			
-			if(bindingResult.hasErrors()) {
+			if(bindingResult.hasErrors() ||!CRepository.test(client.getCin(), client.getMobile(),client.getUsername()).isEmpty()) {
 				redirectAttrs.addAttribute("flag", "error");
 				return"redirect:/Client/EditProfile" ;
 			}

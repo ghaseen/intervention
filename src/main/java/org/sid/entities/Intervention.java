@@ -14,6 +14,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,10 +27,13 @@ public class Intervention  implements Serializable{
 	@Id  @GeneratedValue(strategy=GenerationType.IDENTITY) 
 
 	private  Long idInt ;
+	@NotNull(message="Ne doit pas etre null")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateInt ;
+	@NotBlank(message="Ne doit pas etre vide")
 	private String localisation ; 
+	@NotBlank(message="Ne doit pas etre vide")
 	private String detaille;
 	
 	@ManyToOne

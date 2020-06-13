@@ -45,7 +45,10 @@ private ProduitRepository produitRepository ;
 	
 	@PostMapping("/admin/saveP")
 	public String save (Model model , @Valid Produit produit , BindingResult bindingResult) {
-		if(bindingResult.hasErrors()) return"FormProduit" ;
+		if(bindingResult.hasErrors()) {
+			model.addAttribute("produit",produit);
+			return"/Produit/FormProduit" ;
+		}
 		produitRepository.save(produit) ; 
 		return "redirect:/admin/produit" ; 
 	}
