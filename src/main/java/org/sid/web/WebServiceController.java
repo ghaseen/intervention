@@ -84,17 +84,13 @@ public class WebServiceController {
 		PasswordEncoder bcpe=new BCryptPasswordEncoder();
 		
 		Client client= new Client (
-				
-				
-				
-				
 				request.getParameter("sexe") ,  request.getParameter("nom") , 
 				request.getParameter("prenom"), 
-				Integer.parseInt(request.getParameter("idc")), 
+				request.getParameter("idc"), 
 				formatter.parse(request.getParameter("dateN")) , 
-				request.getParameter("adresse"), Integer.parseInt(request.getParameter("mobile")),
+				request.getParameter("adresse"), request.getParameter("mobile"),
 				request.getParameter("mail"),
-				request.getParameter("password"),request.getParameter("username")
+				request.getParameter("username")
 				); 
 		
 		
@@ -105,13 +101,13 @@ public class WebServiceController {
 			if(client.getAdresse()!=null && !client.getAdresse().isEmpty())
 				cl.setAdresse(client.getAdresse());
 			
-			if(client.getCin()!=null  && !(client.getCin()!=0))
+			if(client.getCin()!=null  && !(client.getCin().isEmpty()))
 				cl.setCin(client.getCin() );
 			
 			if(client.getMail()!=null  && !client.getMail().isEmpty())
 				cl.setMail(client.getMail());
 			
-			if(client.getMobile()==0)
+			if(client.getMobile()!=null && !client.getMobile().isEmpty())
 				cl.setMobile(client.getMobile());
 			
 			if(client.getNom()!=null && !client.getNom().isEmpty())
@@ -120,11 +116,6 @@ public class WebServiceController {
 			if(client.getPrenom()!=null && !client.getPrenom().isEmpty())
 				cl.setPrenom(client.getPrenom());
 			
-
-			
-			if(client.getPassword()!=null && !client.getPassword().isEmpty() ) {
-				cl.setPassword(bcpe.encode(client.getPassword()));
-			}
 		CRepo.save(cl) ;
 		return "done";
 		
@@ -328,54 +319,53 @@ return lsmap;
     }
 				
 		
+	@RequestMapping("/getUser")
+	@CrossOrigin(origins = {"http://localhost:8100","http://localhost:9090"})
+	public Client getClieByUserName(HttpServletRequest  request) {
+
 		
-	
-	
-	@RequestMapping("/updateprofile")
-	public void updateprofile(@RequestBody Client client) {
-
-//ken ma5dmtch men loul nrml badelha kima lokhrin bfazet httpservletrequest 
-		// behi ama lezm ta3ml creation te3 client Client client=new Client(request.getparametre("idc")..... 
-		// behi
-
+		String username= request.getParameter("username"); 
+		String pss=  request.getParameter("pass");
 		PasswordEncoder bcpe=new BCryptPasswordEncoder() ;
-		
-		client.setActive(true);
-		client.setRole("CLIENT");
-		Client cl=CRepo.findById(client.getId()).get();
-		
-		if(client.getDateN()==null)
-		client.setDateN(cl.getDateN());
-		
-		if(client.getAdresse()==null)
-			client.setAdresse(cl.getAdresse());
-		if(client.getCin()==null)
-			client.setCin(cl.getCin());
-		if(client.getMail()==null)
-			client.setMail(cl.getMail());
-		if(client.getMobile()==0)
-			client.setMobile(cl.getMobile());
-		if(client.getNom()==null)
-			client.setNom(cl.getNom());
-		if(client.getPrenom()==null)
-			client.setPrenom(cl.getPrenom());
-		
-
-		
-		if(client.getPassword()!=null && !client.getPassword().isEmpty() ) {
-			client.setPassword(bcpe.encode(client.getPassword()));
-		}else {
-			client.setPassword(CRepo.ChercherClientusername(client.getUsername()).getPassword());
-		}
-		CRepo.save(client);
+		Client cl = CRepo.ChercherClientusername(username);
+		cl.setPassword(bcpe.encode(pss));
+		CRepo.save(cl);
+		return cl ;
 				
 		
 		
 	}
+		
 	
+	
+	
+	
+	/*@RequestMapping("/login")
+	@CrossOrigin(origins = {"http://localhost:8100","http://localhost:9090"})
+	public Client LoginApi(HttpServletRequest request) {
+		String username=request.getParameter("username");
+		String password=request.getParameter("password");
+		
+		Client c=CRepo.ChercherClientusername(username);
+		if(c!=null) {
+	    	PasswordEncoder bcpe=new BCryptPasswordEncoder() ;
+
+			String encpass=bcpe.encode(password);
+			if(bcpe.matches(password, encpass)) {
+				return c;
+			}else {
+				return null ;
+			}
+			
+		}else {
+			return null ;
+		}
+		
+		 
+	}*/
 	@RequestMapping("/login")
 	@CrossOrigin(origins = {"http://localhost:8100","http://localhost:9090"})
-	public String LoginApi(HttpServletRequest request) {
+	public Client LoginApi(HttpServletRequest request) {
 		String username=request.getParameter("username");
 		String password=request.getParameter("password");
 		
@@ -384,16 +374,14 @@ return lsmap;
 	    	PasswordEncoder bcpe=new BCryptPasswordEncoder() ;
  
 			if(bcpe.matches(password, c.getPassword())) {
-				return "shih";
+				return c;
 			}else {
-				return "ghalt";
+				return null ;
 			}
 			
 		}else {
-			return "moch mawjoud";
+			return null;
 		}
-		
-		 
 	}
 	 
 	

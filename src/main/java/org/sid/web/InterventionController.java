@@ -91,8 +91,9 @@ public class InterventionController {
 	
 	@PostMapping("/admin/savei")
 	public String save1 (Model model , @Valid Intervention intervention ,Long id, BindingResult bindingResult) {
+		
 		Reclamation rec=RRepository.findById((long)id).get();
-		intervention.setLocalisation(rec.getAddresse()+" "+rec.getCodeP());
+		intervention.setLocalisation(rec.getAddresse() );
 		intervention.setReclamation(rec);
 		if(bindingResult.hasErrors()|| intervention==null) return"/Intervention/FormIntervention" ;
 		
@@ -125,6 +126,20 @@ public class InterventionController {
 		}
 		Reclamation rec=RRepository.findById(reclamation).get();
 		intervention.setReclamation(rec);
+		Intervention inter=IRepository.findById(intervention.getIdInt()).get();
+		
+		if(intervention.getLocalisation().isEmpty() || intervention.getLocalisation()==null) {
+			intervention.setLocalisation(inter.getLocalisation());
+		}
+		if(intervention.getDetaille().isEmpty() || intervention.getDetaille()==null) {
+			intervention.setDetaille(inter.getDetaille());
+		}
+		if( intervention.getLocalisation()==null) {
+			intervention.setDateInt(inter.getDateInt());
+		}
+		
+		
+		
 		IRepository.save(intervention) ;
 
 		sendmail(intervention,intervention.getReclamation());

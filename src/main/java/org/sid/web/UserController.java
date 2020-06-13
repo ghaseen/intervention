@@ -28,9 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.type.PhoneNumber;
-import com.twilio.Twilio;
+
 
 @Controller
 public class UserController {
@@ -45,8 +43,8 @@ public class UserController {
 
 	    public String sendsms(String content,String number) throws IOException {
 	    	String myURI = "https://api.bulksms.com/v1/messages";
-	    	 String myUsername = "ghassen";
-	    	    String myPassword = "Ghassen2020";
+	    	 String myUsername = "ghassen1";
+	    	    String myPassword = "Ghassen123";
 	    	    // the details of the message we want to send
 	    	    String myData = "{to: \"+216"+number+"\", encoding: \"UNICODE\", body: \""+content+"\"}";
 	    	
@@ -122,6 +120,9 @@ public class UserController {
 	}
 	
 	
+	
+	
+	
 	@RequestMapping(value="/forgotpass")
 	public String forgotpassword() {
 		//when the user click forgot password he will be redirected to this page
@@ -148,11 +149,12 @@ public class UserController {
 	            salt.append(code.charAt(index));
 	        }
 	        String codesms = salt.toString();
+	        System.out.println(codesms);
 		
 		
 		session.setAttribute("code", codesms); 
 		model.addAttribute("userid", c.getId());
-		//sendsms(codesms,String.valueOf(c.getMobile()));
+		sendsms(codesms,String.valueOf(c.getMobile()));
 		
 		
 		return "/User/verifycode";
@@ -257,7 +259,7 @@ public class UserController {
 		if(admin.getPassword()!=null && !admin.getPassword().isEmpty() ) {
 			admin.setPassword(bcpe.encode(admin.getPassword()));
 		}else {
-			admin.setPassword(CRepository.ChercherClientusername(admin.getUsername()).getPassword());
+			admin.setPassword(ad.getPassword());
 		}
 		adminrep.save(admin);
 		

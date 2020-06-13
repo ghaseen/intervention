@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -26,7 +27,8 @@ public class technicien extends users implements Serializable {
 	@NotNull
 	private String prenom ;
 	@NotNull
-	@Size (max=8)
+	//type long tnajem tappliqui alih size
+	//ken string tnajem
 	private Long cin ;
 	private Date dateN ; 
 	@NotNull
@@ -37,7 +39,7 @@ public class technicien extends users implements Serializable {
 	private String adresse ;
 	private int mobile ; 
 	private String mail ; 
-	@OneToMany(mappedBy="technicien")
+	@OneToMany(mappedBy="technicien",cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Intervention> inter; 
 	
 	
@@ -108,6 +110,12 @@ public class technicien extends users implements Serializable {
 	}
 	public void setMail(String mail) {
 		this.mail = mail;
+	}
+	public List<Intervention> getInter() {
+		return inter;
+	}
+	public void setInter(List<Intervention> inter) {
+		this.inter = inter;
 	}
 	
 	

@@ -4,6 +4,7 @@ package org.sid.entities;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,7 +26,7 @@ public class Produit implements Serializable {
 	private String designation ;
 	
 	//@JsonIgnore
-	@OneToMany(mappedBy="produit")
+	@OneToMany(mappedBy="produit",cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JsonBackReference
 	private List<Reclamation> reclamations;
 	

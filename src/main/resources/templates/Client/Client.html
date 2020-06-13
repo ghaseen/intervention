@@ -15,7 +15,7 @@ layout:decorate="layout"xmlns:th="http://www.thymeLeaf.org"
 			<div class="card-header"><h5 class="title">Liste des Clients</h5></div>
 			<div class="row">
 			<div class="col-md-5 pr-1">
-			<form th:action="@{/user/index}" method="get">
+			<form th:action="@{/admin/clients}" method="get">
 			<label>Mot clé:</label>
 			<input type="text" name="motCle" th:value="${motCle}">
 			<button type="submit" class="btn btn-primary">chercher</button>
@@ -49,7 +49,7 @@ layout:decorate="layout"xmlns:th="http://www.thymeLeaf.org"
 					</thead>
 					<tbody>
 					<tr th:each="c:${listClient}">
-						<td th:text="${c.id}"></td>
+						 
 											
 												<td th:text="${c.nom}"></td>
 												<td th:text="${c.prenom}"></td>
@@ -64,19 +64,24 @@ layout:decorate="layout"xmlns:th="http://www.thymeLeaf.org"
 						
 						<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/delete(id=${c.id},page=${currentPage},motCle=${motCle})}"> Delete</a>
 						</td>
-						
+						<td><a  class="btn btn-info" th:href="@{/admin/editC(id=${c.id})}"> Edit</a></td>
 						
 					</tr>
 					</tbody>
 				</table> 
 				</div> 
-					<div>
-				<ul class="nav nav-pills">
-    <li th:class="${currentPage==status.index}?'active':''" th:each="page,status:${pages}">
-				<a th:href="@{/user/index(page=${status.index},motCle=${motCle})}"  th:text="${status.index}"></a>
+				
+				
+					<nav aria-label="...">
+				<ul class="pagination justify-content-center">
+    <li class="page-item"th:classappend="${currentPage==status.index}?'active':''" th:each="page,status:${pages}">
+				<a class="page-link" th:href="@{/admin/clients(page=${status.index},motCle=${motCle})}"  th:text="${status.index}"></a>
    		 </li>
 		</ul>
-			</div>
+			</nav>
+			
+			
+			
 				
 				
 			</div>

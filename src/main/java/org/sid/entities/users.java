@@ -33,6 +33,18 @@ public users(String username, String password, boolean active,String role) {
 	this.active = active;
 	this.role=role;
 }
+
+
+
+public users(String username,  boolean active,String role) {
+	super();
+	this.username = username;
+	this.password = password;
+	this.active = active;
+	this.role=role;
+}
+
+
 public users() {
 	super();
 	// TODO Auto-generated constructor stub

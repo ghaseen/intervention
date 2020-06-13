@@ -28,7 +28,7 @@
 							<thead class="text-primary">
 
 
-
+								<th>ID</th>
 								<th>Technicien</th>
 								<th>dateInt</th>
 								<th>localistaion</th>
@@ -39,9 +39,10 @@
 							</thead>
 							<tbody>
 								<tr th:each="i:${listIntervention}">
+								<td th:text="${i.idInt}"></td>
 									<td th:text="${i.technicien.nom +' '+ i.technicien.prenom}"></td>
 
-
+									
 									<td th:text="${i.dateInt}"></td>
 									<td th:text="${i.localisation}"></td>
 									<td th:text="${i.reclamation.idR}"></td>
@@ -58,8 +59,8 @@
 								</tr>
 							</tbody>
 						</table>
-						<div>
-							<nav aria-label="...">
+						
+							
 								<ul class="pagination">
 
 									<li th:class="${currentPage==status.index}?'active':''"
@@ -68,9 +69,9 @@
 										th:text="${status.index}"></a></li>
 
 								</ul>
-							</nav>
+						
 							
-						</div>
+						
 
 
 					</div>

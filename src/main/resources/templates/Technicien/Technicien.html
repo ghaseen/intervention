@@ -66,6 +66,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 						<a  class="btn btn-danger" onclick="return confirm('etes vous sur ?')" th:href="@{/admin/deleteT(id=${t.id},page=${currentPage},motCle=${motCle})}"> Delete</a>
 						
 						<a  class="btn btn-primary"  th:href="@{/admin/sesintervention(id=${t.id})}"> Interventions</a>
+						<a  class="btn btn-info" th:href="@{/admin/editT(id=${t.id})}"> Edit</a>
 						</td>
 					</tr>
 					</tbody>
@@ -80,7 +81,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 					<div>
 				<ul class="nav nav-pills">
     <li th:class="${currentPage==status.index}?'active':''" th:each="page,status:${pages}">
-				<a th:href="@{/user/index(page=${status.index},motCle=${motCle})}"  th:text="${status.index}"></a>
+				<a th:href="@{/admin/technicien(page=${status.index},motCle=${motCle})}"  th:text="${status.index}"></a>
    		 </li>
 		</ul>
 			</div>

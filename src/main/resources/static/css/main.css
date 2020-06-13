@@ -187,7 +187,7 @@ iframe {
 
 
 .wrap-login100 {
-  width: 560px;
+  width: 600px;
   background: #fff;
   border-radius: 10px;
   position: relative;
@@ -208,6 +208,7 @@ iframe {
   line-height: 1.2;
   text-transform: uppercase;
   text-align: left;
+  align-items: right;
 
   width: 100%;
   display: block;

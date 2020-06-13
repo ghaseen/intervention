@@ -156,8 +156,9 @@ Reclamation reclamation=RRepository.findById(id).get();
 		if(reclamation.getCodeP()==0  ) 
 			reclamation.setCodeP(rec.getCodeP());
 		if(reclamation.getClient()==null)
-			reclamation.setClient(CRepo.findById(idc).get());
+			reclamation.setClient(rec.getClient());
 		
+		reclamation.setProduit(rec.getProduit());
 			
 			
 		RRepository.save(reclamation);
